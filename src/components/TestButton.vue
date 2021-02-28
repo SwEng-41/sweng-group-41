@@ -11,6 +11,7 @@
 <script>
  import axios from 'axios';
  export default {
+
      methods: {
          async onClick(username, password) {
             const res = await axios.post('https://iam.netsoc.ie/v1/users/' + username + '/login', {"password": password});
