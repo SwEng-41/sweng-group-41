@@ -46,9 +46,9 @@
  import axios from 'axios';
  export default {
      methods: {
-         async onClick(username, email, password, firstname, lastname) {
-            console.log(username+email+password+firstname+lastname);
-            const res = await axios.post('https://iam.netsoc.ie/v1/users' , 
+         async onClick(username, firstname, lastname, email, password) {
+            try{
+            const res = await axios.post('https://iam.netsoc.ie/v1/users' ,
                                         {
                                             "username": username,
                                             "email": email,
@@ -56,7 +56,11 @@
                                             "first_name": firstname,
                                             "last_name": lastname
                                             });
-            console.log(res.data);
+
+             console.log(res.data);
+            }catch(e){
+                console.log(e);
+            }
          }
      }
  };
