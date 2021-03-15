@@ -1,16 +1,17 @@
 <template>
-    <section class="section">
-        <div class="account-container">
-            <Button @click="editUsername()" label="Edit Username"/>
-            <SingleBoxForm id="name" label="Change Name"/>
-            <SingleBoxForm id="password" label="Enter Password"/>
-        </div>
-    </section>
+    <html>
+        <body>
+            <div class="accountoptions">
+                <SingleBoxForm label="full name"/>
+                <Button @click="test()" label="edit username"/>
+            </div>
+        </body>
+    </html>
 </template>
 
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 import Button from "@/components/Button.vue";
 import SingleBoxForm from "@/components/SingleBoxForm.vue"
 
@@ -23,45 +24,29 @@ export default {
     },
 
     methods: {
-        async editUsername() {
-            var username = document.getElementById("name").value;
-            var password = document.getElementById("password").value;
-            var lastName = "Vaughan";
-
-            var path = "https://iam.netsoc.ie/v1/users/" + username;
-
-            const res = await axios.patch(
-                path,
-                {
-                    "last_name": lastName,
-                    "first_name": firstName
-                },
-
-                {
-                    
-                }
-            )
-
-
-            // const res = await axios.post('https://iam.netsoc.ie/v1/users/' + username + '/login', {"password": password});
-            alert(res.data.token);
-        }
+        test() { alert("test"); }
     }
 }
 </script>
 
 
-<style scoped>
-.section {
-    margin-right: 30%;
-    margin-left: 30%;
+<style>
+
+body {
+  background-color: #161828;
+  display: flex;
+  justify-content: center;
+  height: 100%;
 }
 
-.account-container {
+.accountoptions {
+    background-color: #0b0c14;
     display: flex;
-    border: solid 1px;
-    border-color: lightgrey;
-    padding: 20px;
+    justify-content: center;
+    border-radius: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
 }
 
 </style>
