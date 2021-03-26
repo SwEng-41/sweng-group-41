@@ -1,16 +1,12 @@
 <template class="container main">
-  <!-- MAIN START -->
 
   <div class="container registrationForm">
-    <!-- HEAD -->
     <header class="head">
       <h1>Register</h1>
-      <p>Please fill in this form to create an account.</p>
+      <p>Please fill in the below form to create an account</p>
       <hr>
     </header>
-    <!-- HEAD END -->
 
-    <!-- INPUT BOXES -->
     <input v-model="username" placeholder="Username" required>
     <input v-model="firstname" placeholder="First Name" required>
     <input v-model="lastname" placeholder="Last Name" required>
@@ -18,9 +14,7 @@
     <input v-model="repeatemail" placeholder="Confirm Email" required>
     <input v-model="password" placeholder="Password" required>
     <input v-model="repeatpassword" placeholder="Confirm Password" required>
-    <!-- INPUT BOXES END -->
 
-    <!-- BUTTON -->
     <button
         class="btn-reg"
         v-on:click="onClick(username, firstname, lastname, email, password)">
@@ -47,16 +41,12 @@
         v-show="isMissing"
         @close="closeModal"
     />
-    <!-- BUTTON END -->
 
-    <!-- SIGN IN -->
     <div class="container SignIn">
       <p>Already have an account? <a href="#">Sign in</a></p>
     </div>
-    <!-- SIGN IN END -->
   </div>
 
-  <!-- MAIN END -->
 </template>
 
 <script>
