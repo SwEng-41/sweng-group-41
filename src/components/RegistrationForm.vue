@@ -7,19 +7,36 @@
       <hr>
     </header>
 
-    <input v-model="username" placeholder="Username" required>
-    <input v-model="firstname" placeholder="First Name" required>
-    <input v-model="lastname" placeholder="Last Name" required>
-    <input v-model="email" placeholder="TCD Email" required>
-    <input v-model="repeatemail" placeholder="Confirm Email" required>
-    <input v-model="password" placeholder="Password" required>
-    <input v-model="repeatpassword" placeholder="Confirm Password" required>
+    <Form @submit="regSubmit" :validation-schema="formSchema">
+      <Field name="username" placeholder="Username"/>
+      <ErrorMessage name="username"/>
 
-    <button
-        class="btn-reg"
-        v-on:click="onClick(username, firstname, lastname, email, password)">
-      Register
-    </button>
+      <Field name="firstname" placeholder="First Name"/>
+      <ErrorMessage name="firstname"/>
+
+      <Field name="lastname" placeholder="Last Name"/>
+      <ErrorMessage name="lastname"/>
+
+      <Field name="email" placeholder="TCD Email" type="email"/>
+      <ErrorMessage name="email"/>
+
+      <Field name="confirmEmail" placeholder="Confirm Email"/>
+      <ErrorMessage name="confirmEmail"/>
+
+      <Field name="password" placeholder="Password" type="password"/>
+      <ErrorMessage name="password"/>
+
+      <Field name="confirmPassword" placeholder="Confirm Password" type="password" ref="password"/>
+      <ErrorMessage name="confirmPassword"/>
+
+      <br>
+
+      <button class="btn-reg">Register</button>
+    </Form>
+
+    <div class="container SignIn">
+      <p>Already have an account? <a href="#">Sign in</a></p>
+    </div>
 
     <AccountCreatedModal
         v-show="isAccountCreated"
@@ -41,10 +58,6 @@
         v-show="isMissing"
         @close="closeModal"
     />
-
-    <div class="container SignIn">
-      <p>Already have an account? <a href="#">Sign in</a></p>
-    </div>
   </div>
 
 </template>
@@ -56,6 +69,8 @@ import SystemErrorModal from './systemErrorModal.vue';
 import TakenModal from './takenModal.vue';
 import MissingModal from './missingModal.vue';
 import InputErrorModal from './inputErrorModal.vue';
+import {ErrorMessage, Field, Form} from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   components: {
@@ -64,6 +79,30 @@ export default {
     TakenModal,
     MissingModal,
     InputErrorModal,
+    Field,
+    Form,
+    ErrorMessage,
+  },
+
+  setup() {
+    yup.setLocale({
+      string: {
+        matches: 'Must be a valid @tcd.ie address',
+      },
+    });
+
+    const formSchema = yup.object({
+      username: yup.string().required().label("Username"),
+      firstname: yup.string().required().label("First Name"),
+      lastname: yup.string().required().label("Last Name"),
+      email: yup.string().required().email().matches(".+@tcd.ie$").label("Email"),
+      confirmEmail: yup.string().oneOf([yup.ref('email'), null], 'Emails must match'),
+      password: yup.string().required().min(8).label("Password"),
+      confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
+    });
+    return {
+      formSchema: formSchema,
+    }
   },
 
   data() {
@@ -77,7 +116,7 @@ export default {
   },
 
   methods: {
-    async onClick(username, firstname, lastname, email, password) {
+    async regSubmit({username, firstname, lastname, email, password}) {
       try {
         const res = await axios.post('https://iam.netsoc.ie/v1/users',
             {
@@ -87,7 +126,7 @@ export default {
               "first_name": firstname,
               "last_name": lastname
             }).catch(err => {
-              if (err.response.status === 409)
+          if (err.response.status === 409)
                 this.isTaken = true;
               else if (err.response.status === 400)
                 this.isMissing = true;
@@ -98,8 +137,6 @@ export default {
             }
         );
 
-        console.log(res.data);
-
         if (res.status === 201)
           this.isAccountCreated = true;
 
@@ -107,7 +144,6 @@ export default {
         console.log(e);
       }
     },
-
     closeModal() {
       this.isAccountCreated = false;
       this.isTaken = false;
@@ -115,7 +151,6 @@ export default {
       this.isInvalid = false;
       this.isMissing = false;
     },
-
   }
 };
 
