@@ -11,13 +11,13 @@
     <!-- HEAD END -->
 
     <!-- INPUT BOXES -->
-    <input v-model="username" placeholder="username" required>
-    <input v-model="firstname" placeholder="firstname" required>
-    <input v-model="lastname" placeholder="lastname" required>
-    <input v-model="email" placeholder="email" required>
-    <input v-model="repeatemail" placeholder="repeat email" required>
-    <input v-model="password" placeholder="password" required>
-    <input v-model="repeatpassword" placeholder="repeat password" required>
+    <input v-model="username" placeholder="Username" required>
+    <input v-model="firstname" placeholder="First Name" required>
+    <input v-model="lastname" placeholder="Last Name" required>
+    <input v-model="email" placeholder="TCD Email" required>
+    <input v-model="repeatemail" placeholder="Confirm Email" required>
+    <input v-model="password" placeholder="Password" required>
+    <input v-model="repeatpassword" placeholder="Confirm Password" required>
     <!-- INPUT BOXES END -->
 
     <!-- BUTTON -->
