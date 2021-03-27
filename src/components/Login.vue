@@ -1,31 +1,30 @@
 <template>
-  <body>
-    <div id="login" class="container loginForm">
+  <div id="login" class="container loginForm">
 
-      <header class="head">
-        <h1>Login</h1>
-      </header>
+    <header class="head">
+      <h1>Login</h1>
+    </header>
 
-      <Form @submit="loginSubmit" :validation-schema="formSchema">
-        <Field name="username" placeholder="Username" />
-        <ErrorMessage name="username" />
+    <Form @submit="loginSubmit" :validation-schema="formSchema">
+      <Field name="username" placeholder="Username"/>
+      <ErrorMessage name="username"/>
 
-        <br />
-        <br />
+      <br/>
+      <br/>
 
-        <Field name="password" placeholder="Password" type="password" />
-        <ErrorMessage name="password" />
+      <Field name="password" placeholder="Password" type="password"/>
+      <ErrorMessage name="password"/>
 
-        <br />
+      <br/>
 
-        <button class="btn-reg">Login</button>
-      </Form>
+      <button class="btn-reg">Login</button>
+    </Form>
 
-      <div class="container ForgotPassword">
-        <router-link to="forgot">Forgot password?</router-link>
-      </div>
+    <div class="container ForgotPassword">
+      <router-link to="forgot">Forgot password?</router-link>
+    </div>
 
-      <LoginSuccessfulModal
+    <LoginSuccessfulModal
         v-show="isLoginSuccessful"
         @close="closeModal"
     />
@@ -34,13 +33,12 @@
         @close="closeModal"
     />
 
-      <InputErrorModal
-        v-show="isInvalid" 
+    <InputErrorModal
+        v-show="isInvalid"
         @close="closeModal"
     />
 
-    </div>
-  </body>
+  </div>
 </template>
 
 <script>
@@ -48,7 +46,7 @@ import axios from "axios";
 import LoginSuccessfulModal from './loginSuccessfulModal.vue';
 import SystemErrorModal from './systemErrorModal.vue';
 import InputErrorModal from "./inputErrorModal.vue";
-import { ErrorMessage, Field, Form } from "vee-validate";
+import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
 export default {
@@ -84,26 +82,21 @@ export default {
   },
   methods: {
     async loginSubmit({username, password}) {
-   try {
-        const res = await axios.post("https://iam.netsoc.ie/v1/users/" + {"username": username} + "/login", {
-            "password": password,
-          }).catch(err => {
-              if (err.response.status === 401 || err.response.status === 404)
-                this.isInvalid = true;
-              else
-                this.isServerIssue = true;
-            }
-        );
+      try {
+        const res = await axios.post("https://iam.netsoc.ie/v1/users/" + username + "/login", {"password": password});
 
-        if (res.status === 200)
-          this.isLoginSuccessful = true;
+        this.isLoginSuccessful = true;
+        console.log("Successful Login!", res)
 
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        if (err.response.status === 401 || err.response.status === 404)
+          this.isInvalid = true;
+        else
+          this.isServerIssue = true;
       }
     },
 
-      closeModal() {
+    closeModal() {
       this.isLoginSuccessful = false;
       this.isServerIssue = false;
       this.isInvalid = false;
