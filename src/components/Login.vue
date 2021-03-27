@@ -1,91 +1,117 @@
 <template>
   <body>
-    <div id="login" class="login-box">     
-      <div v-if="requestSuccessful">
-        Check your email to reset your password
+    <div id="login" class="container loginForm">
+
+      <header class="head">
+        <h1>Login</h1>
+      </header>
+
+      <Form @submit="loginSubmit" :validation-schema="formSchema">
+        <Field name="username" placeholder="Username" />
+        <ErrorMessage name="username" />
+
+        <br />
+        <br />
+
+        <Field name="password" placeholder="Password" type="password" />
+        <ErrorMessage name="password" />
+
+        <br />
+
+        <button class="btn-reg">Login</button>
+      </Form>
+
+      <div class="container ForgotPassword">
+        <router-link to="forgot">Forgot password?</router-link>
       </div>
-      <h1>Login</h1>
-      <form>
-        <div class="user-box">
-          <input type="username" placeholder="Username" v-model="username" />
-          <input type="password" placeholder="Password" v-model="password" />
-        </div>
-        <a href="#" v-on:click="createPost"
-          >Login
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </a>
-        <a href="#" @click="showModal = true">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Forgot Password?</a
-        >
-        <transition name="slide">
-          <div class="modal" v-if="showModal">
-              <h1>Forgot Password</h1>
-              <div class="user-box">
-                <input
-                  type="username"
-                  placeholder="Username"
-                  v-model="forgotUsername"
-                />
-              </div>
-              <a href="#" v-on:click="createPut" @click="showModal = false">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                Reset Passsword
-              </a>
-            </div>
-        </transition>
-      </form>
+
+      <LoginSuccessfulModal
+        v-show="isLoginSuccessful"
+        @close="closeModal"
+    />
+    <SystemErrorModal
+        v-show="isServerIssue"
+        @close="closeModal"
+    />
+
+      <InputErrorModal
+        v-show="isInvalid" 
+        @close="closeModal"
+    />
+
     </div>
   </body>
 </template>
 
 <script>
 import axios from "axios";
+import LoginSuccessfulModal from './loginSuccessfulModal.vue';
+import SystemErrorModal from './systemErrorModal.vue';
+import InputErrorModal from "./inputErrorModal.vue";
+import { ErrorMessage, Field, Form } from "vee-validate";
+import * as yup from "yup";
+
 export default {
+  components: {
+    LoginSuccessfulModal,
+    SystemErrorModal,
+    InputErrorModal,
+    Field,
+    Form,
+    ErrorMessage,
+  },
+
+  setup() {
+
+    const formSchema = yup.object({
+      username: yup.string().required().label("Username"),
+      password: yup.string().required().min(8).label("Password"),
+    });
+    return {
+      formSchema: formSchema,
+    };
+  },
+
   name: "Login",
-   el: '#login',
   data() {
     return {
-      username: "",
-      password: "",
+      isLoginSuccessful: false,
       forgotUsername: "",
       requestSuccessful: false,
-      showModal: false,
+      isInvalid: false,
+      isServerIssue: false
     };
   },
   methods: {
-    createPost() {
-      axios
-        .post("https://iam.netsoc.ie/v1/users/" + this.username + "/login", {
-          password: "",
-        });
+    async loginSubmit({username, password}) {
+   try {
+        const res = await axios.post("https://iam.netsoc.ie/v1/users/" + {"username": username} + "/login", {
+            "password": password,
+          }).catch(err => {
+              if (err.response.status === 401 || err.response.status === 404)
+                this.isInvalid = true;
+              else
+                this.isServerIssue = true;
+            }
+        );
+
+        if (res.status === 200)
+          this.isLoginSuccessful = true;
+
+      } catch (e) {
+        console.log(e);
+      }
     },
-    async createPut() {
-      axios.put(
-        "https://iam.netsoc.ie/v1/users/" + this.forgotUsername + "/login",
-        {},
-        { headers: { Accept: "text/html" } }
-      ).then(()=> {this.requestSuccessful = true;});
+
+      closeModal() {
+      this.isLoginSuccessful = false;
+      this.isServerIssue = false;
+      this.isInvalid = false;
     },
+
   },
 };
 </script>
 
 <style scoped>
-.slide-leave-active {
- transition: transform 1s;
-}
-
-.slide-leave-to {
- transform: translateY(-50%) translateX(100vw);
-}
 </style>
