@@ -39,9 +39,7 @@ export default {
             id="modalDescription"
         >
           <slot name="body">
-            Please ensure you enter the correct details: <br>
-            *Username: must be your valid username <br>
-            *Password: must match your username<br>
+            Please ensure you enter the correct details <br>
           </slot>
         </section>
 

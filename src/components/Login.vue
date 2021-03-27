@@ -16,8 +16,12 @@
       <ErrorMessage name="password"/>
 
       <br/>
+      <br/>
 
       <button class="btn-reg">Login</button>
+      <br/>
+      <br/>
+      
     </Form>
 
     <div class="container ForgotPassword">
