@@ -2,7 +2,7 @@
   <div class="login-box">
   <form>
     <div class="user-box">
-      <input type="text" name="" required="">
+      <input type="text" id="input" name="" required="">
       <label>{{ label }}</label>
     </div>
   </form>
@@ -18,7 +18,7 @@ export default {
             type: String,
             default: ''
         },
-    }
+    },
 }
 </script>
 

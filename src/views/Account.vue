@@ -3,22 +3,23 @@
         <body>
             <div class="accountoptions">
                 <div class="part">
-                    <SingleBoxForm label="full name"/>
-                    <Button @click="test()" label="edit username"/>
+                    <SingleBoxForm label="first name"/>
+                    <SingleBoxForm label="last name"/>
+                    <Button @click="editUsername(first_name, last_name)" label="edit username"/>
                 </div>
 
                 <div class="part">
                     <SingleBoxForm label="new email"/>
-                    <Button @click="test()" label="edit email"/>
+                    <Button @click="editEmail(email)" label="edit email"/>
                 </div>
 
                 <div class="part">
                     <SingleBoxForm label="new password"/>
-                    <Button @click="test()" label="edit password"/>
+                    <Button @click="editPassword(password)" label="edit password"/>
                 </div>
 
                 <div class="lastpart">
-                    <Button @click="test()" label="renew account"/>
+                    <Button @click="renewAccount()" label="renew account"/>
                 </div>
 
             </div>
@@ -28,7 +29,7 @@
 
 
 <script>
-//import axios from 'axios';
+import axios from 'axios';
 import Button from "@/components/Button.vue";
 import SingleBoxForm from "@/components/SingleBoxForm.vue"
 
@@ -41,7 +42,54 @@ export default {
     },
 
     methods: {
-        test() { alert("test"); }
+        async editUsername(first_name, last_name) { 
+
+            let token = "test";
+
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": first_name, "last_name": last_name}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "text/html",
+                },
+            });
+
+            
+
+        },
+
+        async editEmail(email) {
+
+            let token = "test";
+
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": email}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "text/html",
+                },
+            });
+
+            alert(email);
+
+        },
+
+        async editPassword(password) {
+
+            let token = "test";
+
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": password}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "text/html",
+                },
+            });
+
+            alert(password);
+            
+        },
+
+        async renewAccount(){
+
+        }
     }
 }
 </script>
