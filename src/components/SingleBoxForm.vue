@@ -1,5 +1,5 @@
 <template>
-  <div class="login-box">
+<div class="login-box">
   <form>
     <div class="user-box">
       <input type="text" id="input" name="" required="">
@@ -60,8 +60,7 @@ body {
   left: 0;
   padding: 10px 0;
   font-size: 16px;
-  font-variant: small-caps;
-  font-family: Arial, Helvetica, sans-serif;
+  
   color: #fff;
   pointer-events: none;
   transition: .5s;
