@@ -19,10 +19,11 @@
       <br/>
 
       <button class="btn-reg">Login</button>
-      <br/>
-      <br/>
 
     </Form>
+
+    <button class="btn-reg" v-on:click="registerPage">Register</button>
+      <br/>
 
     <div class="container ForgotPassword">
       <router-link to="forgot">Forgot password?</router-link>
@@ -89,6 +90,10 @@ export default {
         else if (err.response.status === 401) this.isInvalid = true;
         else this.isServerIssue = true;
       }
+    },
+
+    registerPage(){
+      this.$router.push({ name: 'Registration'});
     },
 
     closeModal() {
