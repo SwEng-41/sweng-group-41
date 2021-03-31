@@ -1,59 +1,36 @@
 <script>
 export default {
-  name: 'TakenModal',
+  name: 'Modal',
   methods: {
     close() {
       this.$emit('close');
     },
   },
+  props: ['title', 'body'],
 };
 </script>
 
 <template>
   <transition name="modal-fade">
     <div class="modal-backdrop">
-      <div class="modal"
-           role="dialog"
-           aria-labelledby="modalTitle"
-           aria-describedby="modalDescription"
-      >
-        <header
-            class="modal-header"
-            id="modalTitle"
-        >
+      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <header class="modal-header" id="modalTitle">
           <slot name="header">
-            Invalid Details!
+            {{ title }}
           </slot>
-          <button
-              type="button"
-              class="btn-close"
-              @click="close"
-              aria-label="Close modal"
-          >
-            x
-          </button>
+          <button type="button" class="btn-close" @click="close" aria-label="Close modal">x</button>
         </header>
 
-        <section
-            class="modal-body"
-            id="modalDescription"
-        >
+        <section class="modal-body" id="modalDescription">
           <slot name="body">
-            The username/email is already taken!
+            {{ body }}
           </slot>
         </section>
 
         <footer class="modal-footer">
           <slot name="footer">
           </slot>
-          <button
-              type="button"
-              class="btn-green"
-              @click="close"
-              aria-label="Close modal"
-          >
-            Close me!
-          </button>
+          <button type="button" class="btn-green" @click="close" aria-label="Close modal">Close</button>
         </footer>
       </div>
     </div>

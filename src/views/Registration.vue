@@ -40,47 +40,25 @@
       </p>
     </div>
 
-    <AccountCreatedModal
-        v-show="isAccountCreated"
-        @close="closeModal"
-    />
-    <SystemErrorModal
-        v-show="isServerIssue"
-        @close="closeModal"
-    />
-    <TakenModal
-        v-show="isTaken"
-        @close="closeModal"
-    />
-    <InputErrorModal
-        v-show="isInvalid"
-        @close="closeModal"
-    />
-    <MissingModal
-        v-show="isMissing"
-        @close="closeModal"
-    />
+    <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
+           body="Unfortunately we are experiencing some issues. Please try again later!"/>
+    <Modal v-show="isAccountCreated" @close="closeModal" title="Account Created" body="Please verify your email!"/>
+    <Modal v-show="isTaken" @close="closeModal" title="Invalid Details" body="The email or username is already taken!"/>
+    <Modal v-show="isInvalid" @close="closeModal" title="Authorisation Error" body="You are not allowed to do that!"/>
+    <Modal v-show="isMissing" @close="closeModal" title="Missing Details" body="Some required fields are missing!"/>
   </div>
 
 </template>
 
 <script>
 import axios from 'axios';
-import AccountCreatedModal from '../components/accountCreatedModal.vue';
-import SystemErrorModal from '../components/systemErrorModal.vue';
-import TakenModal from '../components/takenModal.vue';
-import MissingModal from '../components/missingModal.vue';
-import InputErrorModal from '../components/inputErrorModal.vue';
+import Modal from '@/components/Modal'
 import {ErrorMessage, Field, Form} from 'vee-validate';
 import * as yup from 'yup';
 
 export default {
   components: {
-    AccountCreatedModal,
-    SystemErrorModal,
-    TakenModal,
-    MissingModal,
-    InputErrorModal,
+    Modal,
     Field,
     Form,
     ErrorMessage,
@@ -127,23 +105,20 @@ export default {
               "password": password,
               "first_name": firstname,
               "last_name": lastname
-            }).catch(err => {
-          if (err.response.status === 409)
-                this.isTaken = true;
-              else if (err.response.status === 400)
-                this.isMissing = true;
-              else if (err.response.status === 401 || err.response.status === 403)
-                this.isInvalid = true;
-              else
-                this.isServerIssue = true;
             }
         );
 
-        if (res.status === 201)
-          this.isAccountCreated = true;
+        this.isAccountCreated = true;
 
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        if (err.response.status === 409)
+          this.isTaken = true;
+        else if (err.response.status === 400)
+          this.isMissing = true;
+        else if (err.response.status === 401 || err.response.status === 403)
+          this.isInvalid = true;
+        else
+          this.isServerIssue = true;
       }
     },
     closeModal() {

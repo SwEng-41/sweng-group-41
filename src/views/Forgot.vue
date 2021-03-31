@@ -5,37 +5,36 @@
     </header>
 
     <Form @submit="forgotSubmit" :validation-schema="formSchema">
-      <Field name="username" placeholder="Username" />
-      <ErrorMessage name="username" />
+      <Field name="username" placeholder="Username"/>
+      <ErrorMessage name="username"/>
 
-      <br />
-      <br />
+      <br/>
+      <br/>
 
       <button class="btn-reg">Reset Passsword</button>
     </Form>
 
-    <ResetSuccessfulModal v-show="isResetSuccessful" @close="closeModal" />
-
-    <SystemErrorModal v-show="isServerIssue" @close="closeModal" />
-
-    <InputErrorModal v-show="isInvalid" @close="closeModal" />
+    <Modal v-show="isResetSuccessful" @close="closeModal" title="Password Reset"
+           body="Please check your email to reset your password!"/>
+    <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
+           body="Unfortunately we are experiencing some issues. Please try again later!"/>
+    <Modal v-show="isInvalid" @close="closeModal" title="Incorrect Password"
+           body="The password you entered is not correct!"/>
+    <Modal v-show="nonExistentUser" @close="closeModal" title="Non Existent User"
+           body="A user with that username does not exist!"/>
 
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import SystemErrorModal from "../components/systemErrorModal.vue";
-import ResetSuccessfulModal from "../components/resetSuccessfulModal.vue";
-import InputErrorModal from "../components/inputErrorModal.vue";
+import Modal from '@/components/Modal'
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
 export default {
   components: {
-    ResetSuccessfulModal,
-    SystemErrorModal,
-    InputErrorModal,
+    Modal,
     Field,
     Form,
     ErrorMessage,
@@ -56,31 +55,32 @@ export default {
       isResetSuccessful: false,
       isServerIssue: false,
       isInvalid: false,
+      nonExistentUser: false,
     };
   },
   methods: {
-    async forgotSubmit({ username }) {
+    async forgotSubmit({username}) {
       try {
         const res = await axios
-          .put(
-            "https://iam.netsoc.ie/v1/users/" +
-              username
-            + "/login",
-            {},
-            { headers: { Accept: "text/html" } }
-          );
-          this.isResetSuccessful = true;
+            .put(
+                "https://iam.netsoc.ie/v1/users/" +
+                username
+                + "/login",
+                {},
+                {headers: {Accept: "text/html"}}
+            );
+        this.isResetSuccessful = true;
         console.log("Reset Request Sent!", res)
-          } catch(err) {
-             if (err.response.status === 401 || err.response.status === 404)
-              this.isInvalid = true;
-            else this.isServerIssue = true;
-          }
+      } catch (err) {
+        if (err.response.status === 404) this.nonExistentUser = true;
+        else if (err.response.status === 401) this.isInvalid = true;
+        else this.isServerIssue = true;
+      }
 
-        
+
     },
-        closeModal() {
-      this. isResetSuccessful = false;
+    closeModal() {
+      this.isResetSuccessful = false;
       this.isServerIssue = false;
       this.isInvalid = false;
     },

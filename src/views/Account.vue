@@ -1,229 +1,227 @@
 <template>
-    <html>
-        <body>
+  <html>
+  <body>
 
-            <div class="login-box">
-                <h2>Account System </h2>
+  <div class="login-box">
+    <h2>Account System </h2>
 
-                    <div class="section">
+    <div class="section">
 
-                        <div class="user-box">
-                            <input type="text" id="new_username" name="" required="">
-                            <label>New Username</label>
-                        </div>
-                            
-                        <a v-on:click="changeUsername()" href="#" onclick="return false;">
+      <div class="user-box">
+        <input type="text" id="new_username" name="" required="">
+        <label>New Username</label>
+      </div>
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            change username
-                            </div>
+      <a v-on:click="changeUsername()" href="#" onclick="return false;">
 
-                        </a>
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          change username
+        </div>
 
-                    </div>
+      </a>
 
-                    <div class="section">
+    </div>
 
-                        <div class="user-box">
-                            <input type="text" id="new_password" name="" required="">
-                            <label>New Password</label>
-                        </div>
-                            
-                        <a v-on:click="changePassword()" href="#" onclick="return false;">
+    <div class="section">
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            change password
-                            </div>
+      <div class="user-box">
+        <input type="text" id="new_password" name="" required="">
+        <label>New Password</label>
+      </div>
 
-                        </a>
+      <a v-on:click="changePassword()" href="#" onclick="return false;">
 
-                    </div>
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          change password
+        </div>
 
-                    <div class="section">
+      </a>
 
-                        <div class="user-box">
-                            <input type="text" id="new_email" name="" required="">
-                            <label>New Email</label>
-                        </div>
-                            
-                        <a v-on:click="changeEmail()" href="#" onclick="return false;">
+    </div>
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            change email
-                            </div>
+    <div class="section">
 
-                        </a>
+      <div class="user-box">
+        <input type="text" id="new_email" name="" required="">
+        <label>New Email</label>
+      </div>
 
-                    </div>
+      <a v-on:click="changeEmail()" href="#" onclick="return false;">
 
-                    <div class="section">
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          change email
+        </div>
 
-                        <div class="user-box">
-                            <input type="text" id="new_first_name" name="" required="">
-                            <label>First Name</label>
-                        </div>
+      </a>
 
-                        <div class="user-box">
-                            <input type="text" id="new_last_name" name="" required="">
-                            <label>Last Name</label>
-                        </div>
-                            
-                        <a v-on:click="changeName()" href="#" onclick="return false;">
+    </div>
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            change name
-                            </div>
+    <div class="section">
 
-                        </a>
+      <div class="user-box">
+        <input type="text" id="new_first_name" name="" required="">
+        <label>First Name</label>
+      </div>
 
-                    </div>
+      <div class="user-box">
+        <input type="text" id="new_last_name" name="" required="">
+        <label>Last Name</label>
+      </div>
 
-                    <div class="section">
-                            
-                        <a href="">
+      <a v-on:click="changeName()" href="#" onclick="return false;">
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            delete account
-                            </div>
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          change name
+        </div>
 
-                        </a>
+      </a>
 
-                    </div>
+    </div>
 
-                    <div class="section">
+    <div class="section">
 
-                        <a href="">
+      <a href="">
 
-                            <div class="button">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            renew account
-                            </div>
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          delete account
+        </div>
 
-                        </a>
+      </a>
 
-                    </div>
-                    
-            </div>
+    </div>
 
-        </body>
-    </html>
+    <div class="section">
+
+      <a href="">
+
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          renew account
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  </body>
+  </html>
 </template>
 
 
 <script>
 import axios from 'axios';
-//import Button from "@/components/Button.vue";
-//import SingleBoxForm from "@/components/SingleBoxForm.vue"
 
 export default {
-    name:'Account',
+  name: 'Account',
 
-    props: ["jwt"],
+  props: ["jwt"],
 
-    methods: {
-        
-        changeUsername() { 
+  methods: {
 
-            let token = this.jwt;
+    changeUsername() {
 
-            let new_username = document.getElementById("new_username").value;
+      let token = this.jwt;
 
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "text/html",
-                },
-            });
+      let new_username = document.getElementById("new_username").value;
 
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "text/html",
         },
+      });
 
-        changePassword() {
+    },
 
-            let token = this.jwt;
+    changePassword() {
 
-            let new_password = document.getElementById("new_password").value;
+      let token = this.jwt;
 
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "text/html",
-                },
-            });
-            
+      let new_password = document.getElementById("new_password").value;
+
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "text/html",
         },
+      });
 
-        changeEmail() {
+    },
 
-            let token = this.jwt;
+    changeEmail() {
 
-            let new_email = document.getElementById("new_email").value;
+      let token = this.jwt;
 
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "text/html",
-                },
-            });
+      let new_email = document.getElementById("new_email").value;
 
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "text/html",
         },
+      });
 
-        changeName() { 
+    },
 
-            let token = this.jwt;
+    changeName() {
 
-            let new_first_name = document.getElementById("new_first_name").value;
-            let new_last_name = document.getElementById("new_last_name").value;
+      let token = this.jwt;
 
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "text/html",
-                },
-            });
+      let new_first_name = document.getElementById("new_first_name").value;
+      let new_last_name = document.getElementById("new_last_name").value;
 
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "text/html",
         },
+      });
 
-        deleteAccount() {
+    },
 
-            let token = this.jwt;
-            
-            let username = "JohnSmith69";
+    deleteAccount() {
 
-            axios.post('https://iam.netsoc.ie/_synapse/admin/v1/deactivate/'+username, {"erase": true}, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+      let token = this.jwt;
 
+      let username = "JohnSmith69";
+
+      axios.post('https://iam.netsoc.ie/_synapse/admin/v1/deactivate/' + username, {"erase": true}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
+      });
 
-        renewAccount() {
-            
-        }
+    },
+
+    renewAccount() {
+
     }
+  }
 }
 </script>
 
@@ -238,21 +236,22 @@ a {
 html {
   height: 100%;
 }
+
 body {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
 }
 
 .section {
-    display: inline-flex;
-    justify-content: center;
-    padding: 12px 0px 12px 0px;
-    border: solid 2px #243b55;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
+  display: inline-flex;
+  justify-content: center;
+  padding: 12px 0px 12px 0px;
+  border: solid 2px #243b55;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
 }
 
 .login-box {
@@ -262,9 +261,9 @@ body {
   left: 50%;
   padding: 40px;
   transform: translate(-50%, -50%);
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, .5);
   box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
   border-radius: 10px;
 }
 
@@ -290,9 +289,10 @@ body {
   outline: none;
   background: transparent;
 }
+
 .login-box .user-box label {
   position: absolute;
-  top:0;
+  top: 0;
   left: 0;
   padding: 10px 0;
   font-size: 16px;
@@ -325,9 +325,9 @@ body {
   background: #03e9f4;
   color: #fff;
   box-shadow: 0 0 5px #03e9f4,
-              0 0 25px #03e9f4,
-              0 0 50px #03e9f4,
-              0 0 100px #03e9f4;
+  0 0 25px #03e9f4,
+  0 0 50px #03e9f4,
+  0 0 100px #03e9f4;
 }
 
 .button span {
@@ -348,7 +348,7 @@ body {
   0% {
     left: -100%;
   }
-  50%,100% {
+  50%, 100% {
     left: 100%;
   }
 }
@@ -367,7 +367,7 @@ body {
   0% {
     top: -100%;
   }
-  50%,100% {
+  50%, 100% {
     top: 100%;
   }
 }
@@ -386,7 +386,7 @@ body {
   0% {
     right: -100%;
   }
-  50%,100% {
+  50%, 100% {
     right: 100%;
   }
 }
@@ -405,7 +405,7 @@ body {
   0% {
     bottom: -100%;
   }
-  50%,100% {
+  50%, 100% {
     bottom: 100%;
   }
 }

@@ -28,26 +28,26 @@
       <router-link to="forgot">Forgot password?</router-link>
     </div>
 
-    <LoginSuccessfulModal v-show="isLoginSuccessful" @close="closeModal"/>
-    <SystemErrorModal v-show="isServerIssue" @close="closeModal"/>
-    <InputErrorModal v-show="isInvalid" @close="closeModal"/>
+    <Modal v-show="isInvalid" @close="closeModal" title="Incorrect Password"
+           body="The password you entered is not correct!"/>
+    <Modal v-show="nonExistentUser" @close="closeModal" title="Non Existent User"
+           body="A user with that username does not exist!"/>
+    <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
+           body="Unfortunately we are experiencing some issues. Please try again later!"/>
+    <Modal v-show="isLoginSuccessful" @close="closeModal" title="Login Successful" body="You logged in successfully!"/>
 
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import LoginSuccessfulModal from '@/components/loginSuccessfulModal';
-import SystemErrorModal from '@/components/systemErrorModal';
-import InputErrorModal from "@/components/inputErrorModal";
+import Modal from '@/components/Modal'
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
 export default {
   components: {
-    LoginSuccessfulModal,
-    SystemErrorModal,
-    InputErrorModal,
+    Modal,
     Field,
     Form,
     ErrorMessage,
@@ -71,7 +71,8 @@ export default {
       forgotUsername: "",
       requestSuccessful: false,
       isInvalid: false,
-      isServerIssue: false
+      isServerIssue: false,
+      nonExistentUser: false
     };
   },
   methods: {
@@ -83,10 +84,9 @@ export default {
         console.log("Successful Login!", res)
 
       } catch (err) {
-        if (err.response.status === 401 || err.response.status === 404)
-          this.isInvalid = true;
-        else
-          this.isServerIssue = true;
+        if (err.response.status === 404) this.nonExistentUser = true;
+        else if (err.response.status === 401) this.isInvalid = true;
+        else this.isServerIssue = true;
       }
     },
 
@@ -94,6 +94,7 @@ export default {
       this.isLoginSuccessful = false;
       this.isServerIssue = false;
       this.isInvalid = false;
+      this.nonExistentUser = false;
     },
 
   },
