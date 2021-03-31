@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'InputErrorModal',
+  name: 'LoginSuccessfulModal',
   methods: {
     close() {
       this.$emit('close');
@@ -22,7 +22,7 @@ export default {
             id="modalTitle"
         >
           <slot name="header">
-            Invalid Details!
+            Login Successful!
           </slot>
           <button
               type="button"
@@ -39,10 +39,7 @@ export default {
             id="modalDescription"
         >
           <slot name="body">
-            Please ensure you enter the correct details: <br>
-            *Username: must be appropriate <br>
-            *Password: must contain 8 characters including numbers and a capital <br>
-            *Email: must be in the form @tcd.ie
+            Your Login was successful!
           </slot>
         </section>
 

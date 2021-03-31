@@ -1,7 +1,9 @@
 <template>
-  <div id="app">
-   <RegistrationForm></RegistrationForm>
+  <div id="nav">
+      <router-link :to="{ name: 'Login' }">Login</router-link> |
+      <router-link :to="{ name: 'RegistrationForm' }">Registration</router-link>
   </div>
+  <router-view />
 </template>
 
 <script>
