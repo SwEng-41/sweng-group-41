@@ -184,3 +184,72 @@ body {
     bottom: 100%;
   }
 }
+
+/*
+*,
+template,
+html,
+body {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+}
+/*
+#Logo {
+    display: inline;
+}
+*/
+.registrationForm {
+  outline: none;
+  display: inline;
+  float: right;
+  border-style: solid;
+  padding: 100px;
+  margin: 100px;
+  height: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input:focus {
+  background-color: #ddd;
+  outline-color: goldenrod;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #ddd;
+  margin-bottom: 25px;
+}
+
+.btn-reg {
+  background-color: goldenrod;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  opacity: 0.8;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+a {
+  color: dodgerblue;
+  text-decoration: none;
+}
+
+.SignIn {
+  text-align: center;
+}

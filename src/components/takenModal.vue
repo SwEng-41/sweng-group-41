@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'InputErrorModal',
+  name: 'TakenModal',
   methods: {
     close() {
       this.$emit('close');
@@ -39,10 +39,7 @@ export default {
             id="modalDescription"
         >
           <slot name="body">
-            Please ensure you enter the correct details: <br>
-            *Username: must be appropriate <br>
-            *Password: must contain 8 characters including numbers and a capital <br>
-            *Email: must be in the form @tcd.ie
+            The username/email is already taken!
           </slot>
         </section>
 
@@ -75,6 +72,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .modal {
   background: #FFFFFF;
   box-shadow: 2px 2px 20px 1px;
@@ -82,25 +80,30 @@ export default {
   display: flex;
   flex-direction: column;
 }
+
 .modal-header,
 .modal-footer {
   padding: 15px;
   display: flex;
 }
+
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
   color: goldenrod;
   justify-content: space-between;
 }
+
 .modal-footer {
   border-top: 1px solid #eeeeee;
   flex-direction: column;
 }
+
 .modal-body {
   position: relative;
   padding: 20px 10px;
 }
+
 .btn-close {
   position: absolute;
   top: 0;
@@ -113,16 +116,19 @@ export default {
   color: goldenrod;
   background: transparent;
 }
+
 .btn-green {
   color: white;
   background: goldenrod;
   border: 1px solid goldenrod;
   border-radius: 2px;
 }
+
 .modal-fade-enter,
 .modal-fade-leave-to {
   opacity: 0;
 }
+
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity .5s ease;
