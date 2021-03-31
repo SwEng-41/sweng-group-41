@@ -21,35 +21,25 @@
       <button class="btn-reg">Login</button>
       <br/>
       <br/>
-      
+
     </Form>
 
     <div class="container ForgotPassword">
       <router-link to="forgot">Forgot password?</router-link>
     </div>
 
-    <LoginSuccessfulModal
-        v-show="isLoginSuccessful"
-        @close="closeModal"
-    />
-    <SystemErrorModal
-        v-show="isServerIssue"
-        @close="closeModal"
-    />
-
-    <InputErrorModal
-        v-show="isInvalid"
-        @close="closeModal"
-    />
+    <LoginSuccessfulModal v-show="isLoginSuccessful" @close="closeModal"/>
+    <SystemErrorModal v-show="isServerIssue" @close="closeModal"/>
+    <InputErrorModal v-show="isInvalid" @close="closeModal"/>
 
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import LoginSuccessfulModal from '../components/loginSuccessfulModal.vue';
-import SystemErrorModal from '../components/systemErrorModal.vue';
-import InputErrorModal from "../components/inputErrorModal.vue";
+import LoginSuccessfulModal from '@/components/loginSuccessfulModal';
+import SystemErrorModal from '@/components/systemErrorModal';
+import InputErrorModal from "@/components/inputErrorModal";
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
@@ -97,6 +87,7 @@ export default {
           this.isInvalid = true;
         else
           this.isServerIssue = true;
+        console.log("ERROR")
       }
     },
 

@@ -7,21 +7,6 @@ body {
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
 }
-.modal{
-    position: fixed;;
-    top: 50%;
-    left: 150%;
-    transform: translate(-50%, -50%);
-    z-index: 150;
-    height: 50%;
-    opacity: 100%;
-  
-    width: 70%;
-    max-width: 400px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
-    padding: 25px;
-  }
 
 .login-box {
   position: absolute;
