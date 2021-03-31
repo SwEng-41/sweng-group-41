@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-   <TestButton></TestButton>
+   <RegistrationForm></RegistrationForm>
   </div>
 </template>
 
 <script>
-import TestButton from './components/TestButton.vue'
+import RegistrationForm from './components/RegistrationForm.vue'
 
 export default {
   name: 'App',
   components: {
-    TestButton
+    RegistrationForm
   }
 }
 </script>
