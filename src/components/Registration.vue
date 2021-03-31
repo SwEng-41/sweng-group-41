@@ -35,7 +35,9 @@
     </Form>
 
     <div class="container SignIn">
-      <p>Already have an account? <a href="#">Sign in</a></p>
+      <p>Already have an account?
+        <router-link :to="{ name: 'Login' }">Sign in</router-link>
+      </p>
     </div>
 
     <AccountCreatedModal
