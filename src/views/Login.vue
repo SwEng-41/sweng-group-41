@@ -81,8 +81,9 @@ export default {
         const res = await axios.post("https://iam.netsoc.ie/v1/users/" + username + "/login", {"password": password});
 
         this.isLoginSuccessful = true;
-        console.log("Successful Login!", res)
-
+        console.log("Successful Login!", res);
+        this.$router.push({ name: 'Account', params: { jwt : res.data.token } });
+        
       } catch (err) {
         if (err.response.status === 404) this.nonExistentUser = true;
         else if (err.response.status === 401) this.isInvalid = true;
