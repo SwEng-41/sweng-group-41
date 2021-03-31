@@ -87,7 +87,6 @@ export default {
           this.isInvalid = true;
         else
           this.isServerIssue = true;
-        console.log("ERROR")
       }
     },
 
