@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png"/>
+    <img alt="Vue logo" src="../assets/Netsoc-Logo.png"/>
 
 
     <Button label="Darragh" @click="testButton()"></Button>

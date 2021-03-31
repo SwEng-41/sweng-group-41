@@ -66,11 +66,11 @@
 
 <script>
 import axios from 'axios';
-import AccountCreatedModal from './accountCreatedModal.vue';
-import SystemErrorModal from './systemErrorModal.vue';
-import TakenModal from './takenModal.vue';
-import MissingModal from './missingModal.vue';
-import InputErrorModal from './inputErrorModal.vue';
+import AccountCreatedModal from '../components/accountCreatedModal.vue';
+import SystemErrorModal from '../components/systemErrorModal.vue';
+import TakenModal from '../components/takenModal.vue';
+import MissingModal from '../components/missingModal.vue';
+import InputErrorModal from '../components/inputErrorModal.vue';
 import {ErrorMessage, Field, Form} from 'vee-validate';
 import * as yup from 'yup';
 

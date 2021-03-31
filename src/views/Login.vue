@@ -47,9 +47,9 @@
 
 <script>
 import axios from "axios";
-import LoginSuccessfulModal from './loginSuccessfulModal.vue';
-import SystemErrorModal from './systemErrorModal.vue';
-import InputErrorModal from "./inputErrorModal.vue";
+import LoginSuccessfulModal from '../components/loginSuccessfulModal.vue';
+import SystemErrorModal from '../components/systemErrorModal.vue';
+import InputErrorModal from "../components/inputErrorModal.vue";
 import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 

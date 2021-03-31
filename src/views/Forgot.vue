@@ -25,10 +25,10 @@
 
 <script>
 import axios from "axios";
-import SystemErrorModal from "./systemErrorModal.vue";
-import ResetSuccessfulModal from "./resetSuccessfulModal.vue";
-import InputErrorModal from "./inputErrorModal.vue";
-import { ErrorMessage, Field, Form } from "vee-validate";
+import SystemErrorModal from "../components/systemErrorModal.vue";
+import ResetSuccessfulModal from "../components/resetSuccessfulModal.vue";
+import InputErrorModal from "../components/inputErrorModal.vue";
+import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
 export default {
