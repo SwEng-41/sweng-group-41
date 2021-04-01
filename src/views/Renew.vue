@@ -59,6 +59,7 @@ export default {
         });
     },
   },
+  
   beforeMount() {
     if (this.jwt.length < 1) {
       this.$router.push({ name: "Login" });
