@@ -140,7 +140,7 @@ export default {
       let username = document.getElementById("username").value;
       let password = document.getElementById("password").value;
 
-      axios.post('https://iam.netsoc.ie/v1/users/' + username + '/login', {"password": password})
+      axios.post('https://iam.staging.netsoc.ie/v1/users/' + username + '/login', {"password": password})
       .then(response => {
         console.log("Successful Login!");
         this.$router.push({ name: 'Account', params: { jwt : response.data.token } });
@@ -165,6 +165,7 @@ export default {
       this.isServerIssue = false;
       this.isInvalid = false;
       this.nonExistentUser = false;
+
     },
 
   },

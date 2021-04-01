@@ -80,7 +80,7 @@
 
     <div class="lastsection">
 
-      <a href="">
+      <a v-on:click="deleteAccount()" href="#">
 
         <div class="buttonnoanim">
           delete account
@@ -120,8 +120,8 @@ export default {
       alert(token);
 
       let new_username = document.getElementById("new_username").value;
-
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
+      console.log(new_username);
+      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"username": new_username}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -136,7 +136,7 @@ export default {
 
       let new_password = document.getElementById("new_password").value;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
+      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"password": new_password}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -151,7 +151,7 @@ export default {
 
       let new_email = document.getElementById("new_email").value;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
+      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"email": new_email}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -167,7 +167,7 @@ export default {
       let new_first_name = document.getElementById("new_first_name").value;
       let new_last_name = document.getElementById("new_last_name").value;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
+      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -176,18 +176,19 @@ export default {
 
     },
 
-    deleteAccount() {
+    async deleteAccount() {
+      try{
+        let token = this.$route.params.jwt;
 
-      let token = this.$route.params.jwt;
-
-      let username = "JohnSmith69";
-
-      axios.post('https://iam.netsoc.ie/_synapse/admin/v1/deactivate/' + username, {"erase": true}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+        await axios.delete('https://iam.staging.netsoc.ie/v1/users/self',{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      catch(err){
+        console.log(err.response.data);
+      }
     },
 
     renewAccount() {

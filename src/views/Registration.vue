@@ -98,14 +98,19 @@ export default {
   methods: {
     async regSubmit({username, firstname, lastname, email, password}) {
       try {
-        await axios.post('https://iam.netsoc.ie/v1/users',
+        await axios.post('https://iam.staging.netsoc.ie/v1/users',
             {
               "username": username,
               "email": email,
               "password": password,
               "first_name": firstname,
               "last_name": lastname
-            }
+            },
+            {
+              headers: {
+                Accept: "text/html",
+              } 
+            },
         );
 
         this.isAccountCreated = true;
