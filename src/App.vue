@@ -22,4 +22,9 @@ export default {
 </script>
 
 <style>
+
+.nav {
+  
+}
+
 </style>
