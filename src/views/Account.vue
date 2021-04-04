@@ -121,7 +121,7 @@ export default {
 
       let new_username = document.getElementById("new_username").value;
       console.log(new_username);
-      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"username": new_username}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -136,7 +136,7 @@ export default {
 
       let new_password = document.getElementById("new_password").value;
 
-      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"password": new_password}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -151,7 +151,7 @@ export default {
 
       let new_email = document.getElementById("new_email").value;
 
-      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"email": new_email}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -167,7 +167,7 @@ export default {
       let new_first_name = document.getElementById("new_first_name").value;
       let new_last_name = document.getElementById("new_last_name").value;
 
-      axios.patch('https://iam.staging.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -177,18 +177,52 @@ export default {
     },
 
     async deleteAccount() {
-      try{
         let token = this.$route.params.jwt;
+        
+        const res = await axios.get('https://iam.netsoc.ie/v1/users/self',{
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    });
 
-        await axios.delete('https://iam.staging.netsoc.ie/v1/users/self',{
+        let userId = '@' + res.data.username +':netsoc.ie';
+
+        await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+        }).then(response => {
+          console.log("Matrix Account deleted!");
+        }).catch(error => {
+          if (error.response.status === 404) console.log("Matrix Account never existed!");
+          else if (error.response.status === 401) console.log("Authentication error");
+          else console.log("server issue");
         });
-      }
-      catch(err){
-        console.log(err.response.data);
-      }
+
+        await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self',{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).then(response => {
+          console.log("Webspace deleted!");
+        }).catch(error => {
+          if (error.response.status === 404) console.log("Webspace never existed!");
+          else if (error.response.status === 401) console.log("Authentication error");
+          else console.log("server issue");
+        });
+
+        await axios.delete('https://iam.netsoc.ie/v1/users/self',{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).then(response => {
+          console.log("Account deleted!");
+        }).catch(error => {
+          if (error.response.status === 404) console.log("Account never existed!");
+          else if (error.response.status === 401) console.log("Authentication error");
+          else console.log("server issue");
+        });
+        
     },
 
     renewAccount() {

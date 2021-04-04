@@ -63,7 +63,7 @@ export default {
       try {
         const res = await axios
             .put(
-                "https://iam.staging.netsoc.ie/v1/users/" +
+                "https://iam.netsoc.ie/v1/users/" +
                 username
                 + "/login",
                 {},
