@@ -90,7 +90,7 @@
 
       <a href="">
 
-        <div @click="redirectToRenewal()" class="buttonnoanim">
+        <div @click="renewAccount()" class="buttonnoanim">
           renew account
         </div>
 

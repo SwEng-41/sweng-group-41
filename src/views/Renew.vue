@@ -25,16 +25,16 @@ export default {
   data() {
     return {
       errorResponse: "",
-      showingButton: false,
+      showingButton: true,
     };
   },
+
   methods: {
     createSession() {
       if (this.uid.length < 1) this.$router.push({ name: "Login" });
-      let stripe = Stripe(STRIPE_PUBLIC_KEY);
-      const URL = PAYMENT_CREATE_SESSION_URL;
+      let stripe = Stripe(123);
+      const URL = "https://www.google.com";
       
-
       let uid = this.uid;
       const axios = require("axios").default;
       axios

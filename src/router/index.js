@@ -4,6 +4,7 @@ import Account from '@/views/Account'
 import About from '@/views/About.vue'
 import Login from '@/views/Login'
 import Forgot from '@/views/Forgot'
+import Renew from '@/views/Renew'
 import Registration from '@/views/Registration'
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
     name: "Registration",
     component: Registration
   },
+  {
+    path: "/renew",
+    name: "Renew",
+    component: Renew
+  }
 ]
 
 const router = createRouter({

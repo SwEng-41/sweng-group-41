@@ -4,7 +4,7 @@
     <h3>Reset Password</h3>
     <div class = "form-group">
       <label>Password</label>
-      <input type = "password",class="form-control",placeholder = "Password"/>
+      <input type = "password" class="form-control" placeholder = "Password"/>
     </div>
 
     <div class = "form-group">
@@ -28,11 +28,11 @@ name: "reset",
       password:'',
       password_confirm:''
     }
-  }
+  },
   methods:{
     async handleSubmit()
     {
-      const response = await axios post('reset')
+      const response = await axios.post('reset')
       {
         password:this.password,
             password_confirm:this.password_confirm,
