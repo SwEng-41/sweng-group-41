@@ -1,135 +1,80 @@
-<template>
-<html>
-  <body>
+<template class="container main">
 
-  <div class="box">
-    <h2>Registration System</h2>
+  <div class="box registrationForm">
+    <h2>Netsoc Registration</h2>
 
     <div class="section">
-
-      <div class="inputbox">
-        <input type="text" id="username" name="" required="">
-        <label>Username</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="text" id="first_name" name="" required="">
-        <label>First Name</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="text" id="last_name" name="" required="">
-        <label>Last Name</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="text" id="email" name="" required="">
-        <label>Email</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="text" id="confirm_email" name="" required="">
-        <label>Confirm Email</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="password" id="password" name="" required="">
-        <label>Password</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="password" id="confirm_password" name="" required="">
-        <label>Confirm Password</label>
-      </div>
-
-      <a v-on:click="register()" href="#" onclick="return false;">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          register
+      <Form @submit="register" :validation-schema="formSchema">
+        <div class="inputbox">
+          <Field name="username" placeholder="Username"/>
+          <ErrorMessage class="vee-error" name="username"/>
         </div>
 
-      </a>
+        <div class="inputbox">
+          <Field name="firstname" placeholder="First Name"/>
+          <ErrorMessage class="vee-error" name="firstname"/>
+        </div>
 
+        <div class="inputbox">
+          <Field name="lastname" placeholder="Last Name"/>
+          <ErrorMessage class="vee-error" name="lastname"/>
+        </div>
+
+        <div class="inputbox">
+          <Field name="email" placeholder="TCD Email" type="email"/>
+          <ErrorMessage class="vee-error" name="email"/>
+        </div>
+
+        <div class="inputbox">
+          <Field name="confirmEmail" placeholder="Confirm Email"/>
+          <ErrorMessage class="vee-error" name="confirmEmail"/>
+        </div>
+
+        <div class="inputbox">
+          <Field name="password" placeholder="Password" type="password"/>
+          <ErrorMessage class="vee-error" name="password"/>
+        </div>
+
+        <div class="inputbox">
+          <Field name="confirmPassword" placeholder="Confirm Password" type="password" ref="password"/>
+          <ErrorMessage class="vee-error" name="confirmPassword"/>
+        </div>
+
+        <br>
+
+        <button>
+          <div class="btn-reg button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            register
+          </div>
+        </button>
+
+      </Form>
     </div>
 
     <div class="section">
-
       <h4>Already have an account?</h4>
-
       <a v-on:click="signIn()" href="#" onclick="return false;">
-
         <div class="buttonnoanim">
           sign in
         </div>
-
       </a>
-
-    </div>
-
-    
-
-  </div>
-
-    <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue" body="Unfortunately we are experiencing some issues. Please try again later!"/>
-    <Modal v-show="isAccountCreated" @close="closeModal(); signIn();" title="Registration Successfu!" body="Please verify your email and then log in!"/>
-    <Modal v-show="isTaken" @close="closeModal" title="Invalid Details" body="The email or username is already taken!"/>
-    <Modal v-show="isInvalid" @close="closeModal" title="Authorisation Error" body="You are not allowed to do that!"/>
-    <Modal v-show="isMissing" @close="closeModal" title="Missing Details" body="Some required fields are missing!"/>
-
-  </body>
-  </html>
-</template>
-
-<!--<template class="container main">
-
-  <div class="container registrationForm">
-    <header class="head">
-      <h1>Register</h1>
-      <p>Please fill in the below form to create an account</p>
-      <hr>
-    </header>
-
-    <Form @submit="regSubmit" :validation-schema="formSchema">
-      <Field name="username" placeholder="Username"/>
-      <ErrorMessage name="username"/>
-
-      <Field name="firstname" placeholder="First Name"/>
-      <ErrorMessage name="firstname"/>
-
-      <Field name="lastname" placeholder="Last Name"/>
-      <ErrorMessage name="lastname"/>
-
-      <Field name="email" placeholder="TCD Email" type="email"/>
-      <ErrorMessage name="email"/>
-
-      <Field name="confirmEmail" placeholder="Confirm Email"/>
-      <ErrorMessage name="confirmEmail"/>
-
-      <Field name="password" placeholder="Password" type="password"/>
-      <ErrorMessage name="password"/>
-
-      <Field name="confirmPassword" placeholder="Confirm Password" type="password" ref="password"/>
-      <ErrorMessage name="confirmPassword"/>
-
-      <br>
-
-      <button class="btn-reg">Register</button>
-    </Form>
-
-    <div class="container SignIn">
-      <p>Already have an account?
-        <router-link :to="{ name: 'Login' }">Sign in</router-link>
-      </p>
     </div>
 
   </div>
 
+  <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
+         body="Unfortunately we are experiencing some issues. Please try again later!"/>
+  <Modal v-show="isAccountCreated" @close="closeModal(); signIn();" title="Registration Successful!"
+         body="Please verify your email and then log in!"/>
+  <Modal v-show="isTaken" @close="closeModal" title="Invalid Details" body="The email or username is already taken!"/>
+  <Modal v-show="isInvalid" @close="closeModal" title="Authorisation Error" body="You are not allowed to do that!"/>
+  <Modal v-show="isMissing" @close="closeModal" title="Missing Details" body="Some required fields are missing!"/>
+
 </template>
--->
 
 <script>
 import axios from 'axios';
@@ -140,11 +85,10 @@ import * as yup from 'yup';
 export default {
   components: {
     Modal,
-    //Field,
-    //Form,
-    //ErrorMessage,
+    Field,
+    Form,
+    ErrorMessage
   },
-/*
   setup() {
     yup.setLocale({
       string: {
@@ -165,7 +109,6 @@ export default {
       formSchema: formSchema,
     }
   },
-  */
 
   data() {
     return {
@@ -178,25 +121,20 @@ export default {
   },
 
   methods: {
-    async register() {
-      let username = document.getElementById("username").value;
-      let email = document.getElementById("email").value;
-      let password = document.getElementById("password").value;
-      let first_name = document.getElementById("first_name").value;
-      let last_name = document.getElementById("last_name").value;
+    async register({username, email, password, firstname, lastname}) {
       try {
         await axios.post('https://iam.netsoc.ie/v1/users',
             {
               "username": username,
               "email": email,
               "password": password,
-              "first_name": first_name,
-              "last_name": last_name
+              "first_name": firstname,
+              "last_name": lastname
             },
             {
               headers: {
                 Accept: "text/html",
-              } 
+              }
             },
         );
 
@@ -221,13 +159,12 @@ export default {
       this.isMissing = false;
     },
     signIn() {
-      this.$router.push({ name: 'Login'});
+      this.$router.push({name: 'Login'});
     }
   }
 };
 
 </script>
-
 <style scoped>
 .box {
   display: flex;
@@ -257,15 +194,5 @@ export default {
   margin: 5px;
   text-align: center;
 }
-
-.lastsection {
-  display: inline-flex;
-  justify-content: center;
-  padding: 12px;
-  border: solid 2px #243b55;
-  border-radius: 15px;
-  margin: 8px;
-}
-
 
 </style>
