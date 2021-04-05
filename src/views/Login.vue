@@ -15,7 +15,7 @@
       </div>
 
       <div class="inputbox">
-        <input type="text" id="password" name="" required="">
+        <input type="password" id="password" name="" required="">
         <label>Password</label>
       </div>
 
