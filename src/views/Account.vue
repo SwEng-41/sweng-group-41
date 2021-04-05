@@ -172,7 +172,6 @@ export default {
           Accept: "text/html",
         },
       });
-
     },
 
     async deleteAccount() {
@@ -186,46 +185,49 @@ export default {
 
       let userId = '@' + res.data.username + ':netsoc.ie';
 
-      await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(response => {
+      try {
+        await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("Matrix Account deleted!");
-      }).catch(error => {
+      } catch (error) {
         if (error.response.status === 404) console.log("Matrix Account never existed!");
         else if (error.response.status === 401) console.log("Authentication error");
         else console.log("server issue");
-      });
+      }
 
-      await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(response => {
+      try {
+        await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("Webspace deleted!");
-      }).catch(error => {
+      } catch (error) {
         if (error.response.status === 404) console.log("Webspace never existed!");
         else if (error.response.status === 401) console.log("Authentication error");
         else console.log("server issue");
-      });
+      }
 
-      await axios.delete('https://iam.netsoc.ie/v1/users/self', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(response => {
+      try {
+        await axios.delete('https://iam.netsoc.ie/v1/users/self', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("Account deleted!");
-      }).catch(error => {
+      } catch (error) {
         if (error.response.status === 404) console.log("Account never existed!");
         else if (error.response.status === 401) console.log("Authentication error");
         else console.log("server issue");
-      });
+      }
 
     },
 
     renewAccount() {
-      this.$router.push({ name: "Renew" });
+      this.$router.push({name: "Renew"});
     }
   }
 }
