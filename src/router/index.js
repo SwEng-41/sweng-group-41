@@ -9,6 +9,7 @@ import Registration from '@/views/Registration'
 // Account Renewal
 import Renew from '@/views/Renew'
 import Success from '@/views/Checkout/Success.vue'
+import Cancellation from '@/views/Checkout/Cancellation.vue'
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     path: "/success",
     name: "Success",
     component: Success
+  },
+  {
+    path: "/cancellation",
+    name: "Cancellation",
+    component: Cancellation
   }
 ]
 

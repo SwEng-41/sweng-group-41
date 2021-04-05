@@ -14,6 +14,22 @@
 <script>
 export default {
     name: "Success",
+
+    mounted() {
+        this.timeout();
+    },
+
+    methods: {
+        redirect() {
+            this.$router.push({ name: "Account" });
+        },
+
+        timeout() {
+            var self = this;
+            setTimeout(() => { self.redirect() } , 5000)
+        }
+    },
+
 }
 </script>
 
