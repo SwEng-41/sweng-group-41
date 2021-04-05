@@ -1,17 +1,23 @@
 <template>
-  <div class="container ForgotPasswordForm">
-    <header class="head">
-      <h1>Forgot Password</h1>
-    </header>
+  <div class="box">
+    <h2>Forgot Password</h2>
 
     <Form @submit="forgotSubmit" :validation-schema="formSchema">
-      <Field name="username" placeholder="Username"/>
-      <ErrorMessage name="username"/>
+      <div class="inputbox">
+        <Field name="username" required/>
+        <label>Username</label>
+        <ErrorMessage class="vee-error" name="username"/>
+      </div>
 
-      <br/>
-      <br/>
-
-      <button class="btn-reg">Reset Passsword</button>
+      <button>
+        <div class="button">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Reset Password
+        </div>
+      </button>
     </Form>
 
     <Modal v-show="isResetSuccessful" @close="closeModal" title="Password Reset"
@@ -63,9 +69,7 @@ export default {
       try {
         const res = await axios
             .put(
-                "https://iam.netsoc.ie/v1/users/" +
-                username
-                + "/login",
+                "https://iam.netsoc.ie/v1/users/" + username + "/login",
                 {},
                 {headers: {Accept: "text/html"}}
             );
@@ -76,13 +80,12 @@ export default {
         else if (err.response.status === 401) this.isInvalid = true;
         else this.isServerIssue = true;
       }
-
-
     },
     closeModal() {
       this.isResetSuccessful = false;
       this.isServerIssue = false;
       this.isInvalid = false;
+      this.nonExistentUser = false;
     },
   },
 };
