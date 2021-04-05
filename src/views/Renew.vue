@@ -31,12 +31,9 @@ export default {
   methods: {
     createSession() {
       if (this.uid.length < 1) this.$router.push({ name: "Login" });
-
-      // eslint-disable-next-line
       let stripe = Stripe(STRIPE_PUBLIC_KEY);
-
-      // eslint-disable-next-line
       const URL = PAYMENT_CREATE_SESSION_URL;
+      
 
       let uid = this.uid;
       const axios = require("axios").default;
@@ -61,14 +58,14 @@ export default {
   },
   
   beforeMount() {
-    if (this.jwt.length < 1) {
-      this.$router.push({ name: "Login" });
-    } else if (this.uid.length < 1) {
-      this.$router.push({ name: "Account" });
-    } else {
-      this.createSession();
-    }
-    setTimeout(() => (this.showingButton = true), 5000);
+    // if (this.jwt.length < 1) {
+    //   this.$router.push({ name: "Login" });
+    // } else if (this.uid.length < 1) {
+    //   this.$router.push({ name: "Account" });
+    // } else {
+    //   this.createSession();
+    // }
+    // setTimeout(() => (this.showingButton = true), 5000);
   },
 };
 </script>
