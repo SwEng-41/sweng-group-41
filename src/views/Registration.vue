@@ -6,37 +6,44 @@
     <div class="section">
       <Form @submit="register" :validation-schema="formSchema">
         <div class="inputbox">
-          <Field name="username" placeholder="Username"/>
+          <Field name="username" required/>
+          <label>Username</label>
           <ErrorMessage class="vee-error" name="username"/>
         </div>
 
         <div class="inputbox">
-          <Field name="firstname" placeholder="First Name"/>
+          <Field name="firstname" required/>
+          <label>First Name</label>
           <ErrorMessage class="vee-error" name="firstname"/>
         </div>
 
         <div class="inputbox">
-          <Field name="lastname" placeholder="Last Name"/>
+          <Field name="lastname" required/>
+          <label>Last Name</label>
           <ErrorMessage class="vee-error" name="lastname"/>
         </div>
 
         <div class="inputbox">
-          <Field name="email" placeholder="TCD Email" type="email"/>
+          <Field name="email" required/>
+          <label>TCD Email</label>
           <ErrorMessage class="vee-error" name="email"/>
         </div>
 
         <div class="inputbox">
-          <Field name="confirmEmail" placeholder="Confirm Email"/>
+          <Field name="confirmEmail" required/>
+          <label>Confirm Email</label>
           <ErrorMessage class="vee-error" name="confirmEmail"/>
         </div>
 
         <div class="inputbox">
-          <Field name="password" placeholder="Password" type="password"/>
+          <Field name="password" required type="password"/>
+          <label>Password</label>
           <ErrorMessage class="vee-error" name="password"/>
         </div>
 
         <div class="inputbox">
-          <Field name="confirmPassword" placeholder="Confirm Password" type="password" ref="password"/>
+          <Field name="confirmPassword" required type="password" ref="password"/>
+          <label>Confirm Password</label>
           <ErrorMessage class="vee-error" name="confirmPassword"/>
         </div>
 

@@ -6,12 +6,14 @@
 
       <Form @submit="login" :validation-schema="formSchema">
         <div class="inputbox">
-          <Field name="username" placeholder="Username"/>
+          <Field name="username" required/>
+          <label>Username</label>
           <ErrorMessage class="vee-error" name="username"/>
         </div>
 
         <div class="inputbox">
-          <Field name="password" placeholder="Password" type="password"/>
+          <Field name="password" required type="password"/>
+          <label>Password</label>
           <ErrorMessage class="vee-error" name="password"/>
         </div>
 
