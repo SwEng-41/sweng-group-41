@@ -90,7 +90,7 @@
 
       <a href="">
 
-        <div class="buttonnoanim">
+        <div @click="redirectToRenewal()" class="buttonnoanim">
           renew account
         </div>
 
@@ -131,26 +131,19 @@ export default {
     },
 
     changePassword() {
-
       let token = this.$route.params.jwt;
-
       let new_password = document.getElementById("new_password").value;
-
       axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
         },
       });
-
     },
 
     changeEmail() {
-
       let token = this.$route.params.jwt;
-
       let new_email = document.getElementById("new_email").value;
-
       axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -161,12 +154,9 @@ export default {
     },
 
     changeName() {
-
       let token = this.$route.params.jwt;
-
       let new_first_name = document.getElementById("new_first_name").value;
       let new_last_name = document.getElementById("new_last_name").value;
-
       axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -184,9 +174,7 @@ export default {
                         Authorization: `Bearer ${token}`,
                       },
                     });
-
         let userId = '@' + res.data.username +':netsoc.ie';
-
         await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -226,9 +214,7 @@ export default {
     },
 
     renewAccount() {
-
-      let token = this.$route.params.jwt;
-
+      this.$router.push({ name: "Renew" });
     }
   }
 }
