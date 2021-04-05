@@ -22,6 +22,7 @@
 export default {
   name: "Renew",
   props: ["uid", "jwt"],
+
   data() {
     return {
       errorResponse: "",
@@ -29,35 +30,35 @@ export default {
     };
   },
 
-  methods: {
-    createSession() {
-      if (this.uid.length < 1) this.$router.push({ name: "Login" });
-      let stripe = Stripe(123);
-      const URL = "https://www.google.com";
+  // methods: {
+    // createSession() {
+    //   if (this.uid.length < 1) this.$router.push({ name: "Login" });
+    //   var stripe = Stripe("pk_test_51HCTMlKULAGg50zbqiZBDhXIYS79K3eHv4atQn6LNjskaB3Q288Hm0JUYcT1ZN6MtFOoWp5IGCHkWtVZneQnGU0j00iR6NFvqU");
       
-      let uid = this.uid;
-      const axios = require("axios").default;
-      axios
-        .post(
-          URL,
-          { uid: uid },
-          {
-            headers: {
-              "Access-Control-Allow-Headers": "Content-Type",
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((session) => {
-          stripe.redirectToCheckout({ sessionId: session.data.id });
-        })
-        .catch((error) => {
-          this.errorResponse = `Error: ${error.response.data.message}`;
-        });
-    },
-  },
+    //   let uid = this.uid;
+    //   const axios = require("axios").default;
+      
+    //   axios
+    //     .post(
+    //       URL,
+    //       { uid: uid },
+    //       {
+    //         headers: {
+    //           "Access-Control-Allow-Headers": "Content-Type",
+    //           "Content-Type": "application/json",
+    //         },
+    //       }
+    //     )
+    //     .then((session) => {
+    //       stripe.redirectToCheckout({ sessionId: session.data.id });
+    //     })
+    //     .catch((error) => {
+    //       this.errorResponse = `Error: ${error.response.data.message}`;
+    //     });
+  //   },
+  // },
   
-  beforeMount() {
+  // beforeMount() {
     // if (this.jwt.length < 1) {
     //   this.$router.push({ name: "Login" });
     // } else if (this.uid.length < 1) {
@@ -66,7 +67,7 @@ export default {
     //   this.createSession();
     // }
     // setTimeout(() => (this.showingButton = true), 5000);
-  },
+  // },
 };
 </script>
 

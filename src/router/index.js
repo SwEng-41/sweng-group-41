@@ -4,8 +4,11 @@ import Account from '@/views/Account'
 import About from '@/views/About.vue'
 import Login from '@/views/Login'
 import Forgot from '@/views/Forgot'
-import Renew from '@/views/Renew'
 import Registration from '@/views/Registration'
+
+// Account Renewal
+import Renew from '@/views/Renew'
+import Success from '@/views/Checkout/Success.vue'
 
 const routes = [
   {
@@ -42,6 +45,11 @@ const routes = [
     path: "/renew",
     name: "Renew",
     component: Renew
+  },
+  {
+    path: "/success",
+    name: "Success",
+    component: Success
   }
 ]
 

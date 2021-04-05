@@ -9,6 +9,10 @@
     <router-link :to="{ name: 'Registration' }">Registration</router-link>
     |
     <router-link :to="{ name: 'Account' }">Account</router-link>
+    |
+    <router-link :to="{ name: 'Success' }">Success</router-link>
+    |
+    <router-link :to="{ name: 'Cancellation' }">Cancellation</router-link>
 
   </div>
   <router-view/>
