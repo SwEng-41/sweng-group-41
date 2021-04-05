@@ -64,7 +64,7 @@ body {
     padding: 10px 0;
     font-size: 16px;
     color: #fff;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border: none;
     border-bottom: 1px solid #fff;
     outline: none;
@@ -82,8 +82,8 @@ body {
     transition: .5s;
 }
 
-.box .inputbox input:focus ~ label,
-.box .inputbox input:valid ~ label {
+.box .inputbox input:valid ~ label,
+.box .inputbox input:focus ~ label {
     top: -20px;
     left: 0;
     color: #03e9f4;

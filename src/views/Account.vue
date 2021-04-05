@@ -1,127 +1,137 @@
 <template>
-<html>
-  <body>
-
   <div class="box">
     <h2>Account System</h2>
 
     <div class="section">
-
-      <div class="inputbox">
-        <input type="text" id="new_username" name="" required="">
-        <label>New Username</label>
-      </div>
-
-      <a v-on:click="changeUsername()" href="#" onclick="return false;">
-
-        <div class="buttonnoanim">
-          change username
+      <Form @submit="changeUsername" :validation-schema="usernameSchema">
+        <div class="inputbox">
+          <Field name="username" required/>
+          <label>New Username</label>
+          <ErrorMessage class="vee-error" name="username"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Username</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="inputbox">
-        <input type="text" id="new_password" name="" required="">
-        <label>New Password</label>
-      </div>
-
-      <a v-on:click="changePassword()" href="#" onclick="return false;">
-
-        <div class="buttonnoanim">
-          change password
+      <Form @submit="changePassword" :validation-schema="passwordSchema">
+        <div class="inputbox">
+          <Field name="password" type="password" required/>
+          <label>New Password</label>
+          <ErrorMessage class="vee-error" name="password"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Password</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="inputbox">
-        <input type="text" id="new_email" name="" required="">
-        <label>New Email</label>
-      </div>
-
-      <a v-on:click="changeEmail()" href="#" onclick="return false;">
-
-        <div class="buttonnoanim">
-          change email
+      <Form @submit="changeEmail" :validation-schema="emailSchema">
+        <div class="inputbox">
+          <Field name="email" required/>
+          <label>New Email</label>
+          <ErrorMessage class="vee-error" name="email"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Email</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="inputbox">
-        <input type="text" id="new_first_name" name="" required="">
-        <label>First Name</label>
-      </div>
-
-      <div class="inputbox">
-        <input type="text" id="new_last_name" name="" required="">
-        <label>Last Name</label>
-      </div>
-
-      <a v-on:click="changeName()" href="#" onclick="return false;">
-
-        <div class="buttonnoanim">
-          change name
+      <Form @submit="changeName" :validation-schema="nameSchema">
+        <div class="inputbox">
+          <Field name="firstname" required/>
+          <label>First Name</label>
+          <ErrorMessage class="vee-error" name="firstname"/>
+        </div>
+        <div class="inputbox">
+          <Field name="lastname" required/>
+          <label>Last Name</label>
+          <ErrorMessage class="vee-error" name="lastname"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Name</div>
+        </button>
+      </Form>
     </div>
 
     <div class="lastsection">
-
       <a v-on:click="deleteAccount()" href="#">
-
         <div class="buttonnoanim">
           delete account
         </div>
-
       </a>
 
       <a href="">
-
         <div @click="renewAccount()" class="buttonnoanim">
           renew account
         </div>
-
       </a>
 
     </div>
 
   </div>
-
-  </body>
-  </html>
 </template>
 
 
 <script>
 import axios from 'axios';
+import {ErrorMessage, Field, Form} from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
+  components: {
+    Field,
+    Form,
+    ErrorMessage,
+  },
+  setup() {
+    yup.setLocale({
+      string: {
+        matches: 'Must be a valid @tcd.ie address',
+      },
+    });
+
+    const usernameSchema = yup.object({
+      username: yup.string().required().label("Username"),
+    });
+
+    const passwordSchema = yup.object({
+      password: yup.string().required().min(8).label("Password"),
+    });
+
+    const emailSchema = yup.object({
+      email: yup.string().required().email().matches(".+@tcd.ie$").label("Email"),
+    });
+    const nameSchema = yup.object({
+      firstname: yup.string().required().label("First Name"),
+      lastname: yup.string().required().label("Last Name"),
+    });
+
+    return {
+      usernameSchema: usernameSchema,
+      passwordSchema: passwordSchema,
+      emailSchema: emailSchema,
+      nameSchema: nameSchema,
+    }
+  },
+
   name: 'Account',
 
   methods: {
 
-    changeUsername() {
-
+    changeUsername({username}) {
       let token = this.$route.params.jwt;
 
-      alert(token);
-
-      let new_username = document.getElementById("new_username").value;
-      console.log(new_username);
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": username}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -130,10 +140,10 @@ export default {
 
     },
 
-    changePassword() {
+    changePassword({password}) {
       let token = this.$route.params.jwt;
-      let new_password = document.getElementById("new_password").value;
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
+
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": password}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -141,10 +151,10 @@ export default {
       });
     },
 
-    changeEmail() {
+    changeEmail({email}) {
       let token = this.$route.params.jwt;
-      let new_email = document.getElementById("new_email").value;
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
+
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": email}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -153,11 +163,10 @@ export default {
 
     },
 
-    changeName() {
+    changeName({firstname, lastname}) {
       let token = this.$route.params.jwt;
-      let new_first_name = document.getElementById("new_first_name").value;
-      let new_last_name = document.getElementById("new_last_name").value;
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
+
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": firstname, "last_name": lastname}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -167,50 +176,52 @@ export default {
     },
 
     async deleteAccount() {
-        let token = this.$route.params.jwt;
-        
-        const res = await axios.get('https://iam.netsoc.ie/v1/users/self',{
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    });
-        let userId = '@' + res.data.username +':netsoc.ie';
-        await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }).then(response => {
-          console.log("Matrix Account deleted!");
-        }).catch(error => {
-          if (error.response.status === 404) console.log("Matrix Account never existed!");
-          else if (error.response.status === 401) console.log("Authentication error");
-          else console.log("server issue");
-        });
+      let token = this.$route.params.jwt;
 
-        await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self',{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }).then(response => {
-          console.log("Webspace deleted!");
-        }).catch(error => {
-          if (error.response.status === 404) console.log("Webspace never existed!");
-          else if (error.response.status === 401) console.log("Authentication error");
-          else console.log("server issue");
-        });
+      const res = await axios.get('https://iam.netsoc.ie/v1/users/self', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        await axios.delete('https://iam.netsoc.ie/v1/users/self',{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }).then(response => {
-          console.log("Account deleted!");
-        }).catch(error => {
-          if (error.response.status === 404) console.log("Account never existed!");
-          else if (error.response.status === 401) console.log("Authentication error");
-          else console.log("server issue");
-        });
-        
+      let userId = '@' + res.data.username + ':netsoc.ie';
+
+      await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(response => {
+        console.log("Matrix Account deleted!");
+      }).catch(error => {
+        if (error.response.status === 404) console.log("Matrix Account never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      });
+
+      await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(response => {
+        console.log("Webspace deleted!");
+      }).catch(error => {
+        if (error.response.status === 404) console.log("Webspace never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      });
+
+      await axios.delete('https://iam.netsoc.ie/v1/users/self', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(response => {
+        console.log("Account deleted!");
+      }).catch(error => {
+        if (error.response.status === 404) console.log("Account never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      });
+
     },
 
     renewAccount() {
@@ -219,8 +230,6 @@ export default {
   }
 }
 </script>
-
-
 <style scoped>
 .box {
   display: flex;
@@ -260,6 +269,4 @@ export default {
   border-radius: 15px;
   margin: 8px;
 }
-
-
 </style>
