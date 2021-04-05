@@ -11,6 +11,21 @@
 <script>
 export default {
     name: "Cancellation",
+
+    mounted() {
+        this.timeout();
+    },
+
+    methods: {
+        redirect() {
+            this.$router.push({ name: "Account" });
+        },
+
+        timeout() {
+            var self = this;
+            setTimeout(() => { self.redirect() } , 2000)
+        }
+    },
 }
 </script>
 

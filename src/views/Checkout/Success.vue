@@ -26,7 +26,7 @@ export default {
 
         timeout() {
             var self = this;
-            setTimeout(() => { self.redirect() } , 5000)
+            setTimeout(() => { self.redirect() } , 2000)
         }
     },
 
