@@ -78,6 +78,14 @@
 
     </div>
 
+    <div class="section">
+      <a href="">
+        <div @click="logout()" class="buttonnoanim">
+          Logout
+        </div>
+      </a>
+    </div>
+
   </div>
 </template>
 
@@ -228,7 +236,11 @@ export default {
 
     renewAccount() {
       this.$router.push({name: "Renew"});
-    }
+    },
+
+    logout() {
+      this.$router.push({name: "Login"});
+    },
   }
 }
 </script>
