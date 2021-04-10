@@ -3,6 +3,7 @@ import Account from '@/views/Account'
 import Login from '@/views/Login'
 import Forgot from '@/views/Forgot'
 import Registration from '@/views/Registration'
+import Reset from '@/views/Reset'
 
 // Account Renewal
 import Renew from '@/views/Renew'
@@ -44,6 +45,11 @@ const routes = [
     path: "/cancellation",
     name: "Cancellation",
     component: Cancellation
+  },
+  {
+    path: "/reset",
+    name: "Reset",
+    component: Reset
   }
 ]
 
