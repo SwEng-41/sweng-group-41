@@ -64,7 +64,7 @@
     </div>
 
     <div class="lastsection">
-      <a v-on:click="deleteAccount()" href="#">
+      <a v-on:click="isDelete = true;">
         <div class="buttonnoanim">
           delete account
         </div>
@@ -86,18 +86,23 @@
       </a>
     </div>
 
+    <Modal v-show="isDelete" @close="closeModal();" @buttonPressed="deleteAccount();" title="Are you sure you want to delete your Account?"
+        body="Press close to delete, x to cancel"/>
+
   </div>
 </template>
 
 
 <script>
 import axios from 'axios';
+import Modal from '@/components/Modal'
 import {ErrorMessage, Field, Form} from 'vee-validate';
 import * as yup from 'yup';
 
 export default {
   components: {
     Field,
+    Modal,
     Form,
     ErrorMessage,
   },
@@ -130,6 +135,12 @@ export default {
       emailSchema: emailSchema,
       nameSchema: nameSchema,
     }
+  },
+
+  data() {
+    return {
+      isDelete: false,
+    };
   },
 
   name: 'Account',
@@ -199,6 +210,7 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
+
         console.log("Matrix Account deleted!");
       } catch (error) {
         if (error.response.status === 404) console.log("Matrix Account never existed!");
@@ -232,10 +244,16 @@ export default {
         else console.log("server issue");
       }
 
+      document.location.href="/";
+
     },
 
     renewAccount() {
       this.$router.push({name: "Renew"});
+    },
+
+    closeModal() {
+      this.isDelete = false;
     },
 
     logout() {

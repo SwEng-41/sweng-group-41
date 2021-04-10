@@ -5,6 +5,9 @@ export default {
     close() {
       this.$emit('close');
     },
+    buttonPressed() {
+      this.$emit('buttonPressed');
+    }
   },
   props: ['title', 'body'],
 };
@@ -30,7 +33,7 @@ export default {
         <footer class="modal-footer">
           <slot name="footer">
           </slot>
-          <button type="button" class="btn-green" @click="close" aria-label="Close modal">Close</button>
+          <button type="button" class="btn-blue" @click="close(); buttonPressed();" aria-label="Close modal">Close</button>
         </footer>
       </div>
     </div>
@@ -94,7 +97,7 @@ export default {
   background: transparent;
 }
 
-.btn-green {
+.btn-blue {
   color: white;
   background: goldenrod;
   border: 1px solid goldenrod;
