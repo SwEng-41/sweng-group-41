@@ -122,34 +122,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.box {
-  display: flex;
-  flex-direction: column;
-}
-
-.section {
-  display: inline-flex;
-  flex-direction: column;
-
-}
-
-.inputbox {
-  margin: 10px;
-}
-
-.box .inputbox input {
-  width: 100%;
-}
-
-.button {
-  margin: 5px;
-  text-align: center;
-}
-
-.buttonnoanim {
-  margin: 5px;
-  text-align: center;
-}
-</style>

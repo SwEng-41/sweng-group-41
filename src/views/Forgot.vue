@@ -2,23 +2,25 @@
   <div class="box">
     <h2>Forgot Password</h2>
 
-    <Form @submit="forgotSubmit" :validation-schema="formSchema">
-      <div class="inputbox">
-        <Field name="username" required/>
-        <label>Username</label>
-        <ErrorMessage class="vee-error" name="username"/>
-      </div>
-
-      <button>
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Reset Password
+    <div class="section">
+      <Form @submit="forgotSubmit" :validation-schema="formSchema">
+        <div class="inputbox">
+          <Field name="username" required/>
+          <label>Username</label>
+          <ErrorMessage class="vee-error" name="username"/>
         </div>
-      </button>
-    </Form>
+
+        <button>
+          <div class="button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Reset Password
+          </div>
+        </button>
+      </Form>
+    </div>
 
     <Modal v-show="isResetSuccessful" @close="closeModal" title="Password Reset"
            body="Please check your email to reset your password!"/>
@@ -91,33 +93,3 @@ export default {
 };
 
 </script>
-<style scoped>
-.box {
-  display: flex;
-  flex-direction: column;
-}
-
-.section {
-  display: inline-flex;
-  flex-direction: column;
-
-}
-
-.inputbox {
-  margin: 10px;
-}
-
-.box .inputbox input {
-  width: 100%;
-}
-
-.button {
-  margin: 5px;
-  text-align: center;
-}
-
-.buttonnoanim {
-  margin: 5px;
-  text-align: center;
-}
-</style>

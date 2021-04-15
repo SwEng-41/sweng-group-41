@@ -1,6 +1,6 @@
 a {
-    color: inherit; /* blue colors for links too */
-    text-decoration: inherit; /* no underline */
+    color: inherit;
+    text-decoration: inherit;
     margin: 0;
     padding: 0;
 }
@@ -24,6 +24,7 @@ body {
 
 .section {
     display: inline-flex;
+    flex-direction: column;
     justify-content: center;
     padding: 12px;
     border: solid 2px #243b55;
@@ -39,6 +40,8 @@ body {
     box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
     border-radius: 10px;
     margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .box h2 {
@@ -57,6 +60,7 @@ body {
 
 .box .inputbox {
     position: relative;
+    margin: 10px;
 }
 
 .box .inputbox input {
@@ -95,8 +99,9 @@ button {
     border: none;
     padding: 0;
     cursor: pointer;
-    margin: 0;
     width: 100%;
+    margin: 5px;
+    text-align: center;
 }
 
 .button {
@@ -210,7 +215,8 @@ button {
     text-decoration: none;
     overflow: hidden;
     transition: 0.5s;
-    margin: 0;
+    margin: 5px;
+    text-align: center;
 }
 
 .buttonnoanim:hover {
