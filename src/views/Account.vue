@@ -3,7 +3,7 @@
     <h2>Account System</h2>
 
     <div class="section">
-      <Form @submit="changeUsername" :validation-schema="usernameSchema">
+      <Form @submit="isChangeUsername = true;" :validation-schema="usernameSchema">
         <div class="inputbox">
           <Field name="username" required/>
           <label>New Username</label>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="changePassword" :validation-schema="passwordSchema">
+      <Form @submit="isChangePassword = true;" :validation-schema="passwordSchema">
         <div class="inputbox">
           <Field name="password" type="password" required/>
           <label>New Password</label>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="changeEmail" :validation-schema="emailSchema">
+      <Form @submit="isChangeEmail = true;" :validation-schema="emailSchema">
         <div class="inputbox">
           <Field name="email" required/>
           <label>New Email</label>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="changeName" :validation-schema="nameSchema">
+      <Form @submit="isChangeName = true;" :validation-schema="nameSchema">
         <div class="inputbox">
           <Field name="firstname" required/>
           <label>First Name</label>
@@ -88,6 +88,14 @@
 
     <Modal v-show="isDelete" @close="closeModal();" @buttonPressed="deleteAccount();" title="Are you sure you want to delete your Account?"
         body="Press close to delete, x to cancel"/>
+    <Modal v-show="isChangeName" @close="closeModal();" @buttonPressed="changeName();" title="Are you sure you want to change your name?"
+        body="Press close to change name, x to cancel"/>
+    <Modal v-show="isChangeEmail" @close="closeModal();" @buttonPressed="changeEmail();" title="Are you sure you want to change your email?"
+        body="Press close to change email, x to cancel"/>
+    <Modal v-show="isChangePassword" @close="closeModal();" @buttonPressed="changePassword();" title="Are you sure you want to change your password?"
+        body="Press close to change password, x to cancel"/>
+    <Modal v-show="isChangeUsername" @close="closeModal();" @buttonPressed="changeUsername();" title="Are you sure you want to change your username?"
+        body="Press close to change username, x to cancel"/>
 
   </div>
 </template>
@@ -140,6 +148,10 @@ export default {
   data() {
     return {
       isDelete: false,
+      isChangeEmail: false,
+      isChangeName: false,
+      isChangeUsername: false,
+      isChangePassword: false,
     };
   },
 
