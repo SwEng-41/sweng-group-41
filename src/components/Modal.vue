@@ -17,24 +17,33 @@ export default {
   <transition name="modal-fade">
     <div class="modal-backdrop">
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
-        <header class="modal-header" id="modalTitle">
-          <slot name="header">
-            {{ title }}
-          </slot>
-          <button type="button" class="btn-close" @click="close" aria-label="Close modal">x</button>
-        </header>
+        <div class="box">
+          <header class="modal-header" id="modalTitle">
+            <slot name="header">
+              <h3>{{ title }}</h3>
+            </slot>
+          </header>
 
-        <section class="modal-body" id="modalDescription">
-          <slot name="body">
-            {{ body }}
-          </slot>
-        </section>
+          <section class="modal-body" id="modalDescription">
+            <slot name="body">
+              {{ body }}
+            </slot>
+          </section>
 
-        <footer class="modal-footer">
-          <slot name="footer">
-          </slot>
-          <button type="button" class="btn-blue" @click="close(); buttonPressed();" aria-label="Close modal">Close</button>
-        </footer>
+          <footer class="modal-footer">
+            <slot name="footer">
+              <button @click="close(); buttonPressed();">
+                <div class="button">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  Close
+                </div>
+              </button>
+            </slot>
+          </footer>
+        </div>
       </div>
     </div>
   </transition>
@@ -54,8 +63,8 @@ export default {
 }
 
 .modal {
-  background: #FFFFFF;
-  box-shadow: 2px 2px 20px 1px;
+  background: #81a1c1;
+  border-radius: 10px;
   overflow-x: auto;
   display: flex;
   flex-direction: column;
@@ -70,8 +79,12 @@ export default {
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
-  color: goldenrod;
-  justify-content: space-between;
+  color: #d08770;
+  justify-content: space-around;
+  margin: 0 0 30px;
+  padding: 0;
+  text-align: center;
+  font-size: 1.5em;
 }
 
 .modal-footer {
@@ -81,27 +94,10 @@ export default {
 
 .modal-body {
   position: relative;
-  padding: 20px 10px;
-}
-
-.btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  color: goldenrod;
-  background: transparent;
-}
-
-.btn-blue {
+  margin: 10px;
+  padding-bottom: 30px;
   color: white;
-  background: goldenrod;
-  border: 1px solid goldenrod;
-  border-radius: 2px;
+  text-align: center;
 }
 
 .modal-fade-enter,
