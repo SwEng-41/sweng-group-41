@@ -257,7 +257,7 @@ export default {
     },
 
     logout() {
-      this.$router.push({name: "Login"});
+      this.$router.removeRoute("Account");
     },
   }
 }
