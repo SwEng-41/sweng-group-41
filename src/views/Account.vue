@@ -86,6 +86,7 @@
       </a>
     </div>
 
+    <!-- Confirmation modals -->
     <Modal v-show="isDelete" @close="closeModal()" @confirm="deleteAccount()" confirmation=true
            confirm-text="Delete" close-text="Cancel" title="Delete Account"
            body="Are you sure you want to delete your account?"/>
@@ -102,6 +103,23 @@
            confirm-text="Change" close-text="Cancel" title="Change Username"
            body="Are you sure you want to change your username?"/>
 
+    <!-- Success and Error Modals -->
+    <Modal v-show="is200" @close="closeModal();" title="Success"
+           body="The requested changes have been applied."/>
+    <Modal v-show="is400" @close="closeModal();" title="Error"
+           body="Required fields missing. Please try again!"/>
+    <Modal v-show="is401" @close="closeModal();" title="Error"
+           body="Authorisation error. Make sure you are logged in!"/>
+    <Modal v-show="is403" @close="closeModal();" title="Error"
+           body="Permission error. Make sure you are logged in!"/>
+    <Modal v-show="is404" @close="closeModal();" title="Error"
+           body="Username does not exist. Please try again!"/>
+    <Modal v-show="is409" @close="closeModal();" title="Error"
+           body="Username or email already exists. Please try again!"/>
+    <Modal v-show="is500" @close="closeModal();" title="Error"
+           body="Server error. Please try again later!"/>
+    <Modal v-show="isGenericError" @close="closeModal();" title="Error"
+           body="There was an error. Please try again!"/>
   </div>
 </template>
 
@@ -158,6 +176,14 @@ export default {
       isChangeUsername: false,
       isChangePassword: false,
       newValues: Object,
+      is200: false,
+      is400: false,
+      is401: false,
+      is403: false,
+      is404: false,
+      is409: false,
+      is500: false,
+      isGenericError: false,
     };
   },
 
@@ -170,59 +196,105 @@ export default {
       this[modalVariable] = true;
     },
 
+    async errorWrapper(axiosFunction) {
+      try {
+        this.closeModal();
+        await axiosFunction()
+        this.is200 = true;
+      } catch (e) {
+        if (!e.errorResponse) this.isGenericError = true;
+        else {
+          switch (e.errorResponse.status) {
+            case 400:
+              this.is400 = true;
+              break;
+            case 401:
+              this.is401 = true;
+              break;
+            case 403:
+              this.is403 = true;
+              break;
+            case 404:
+              this.is404 = true;
+              break;
+            case 409:
+              this.is409 = true;
+              break;
+            case 500:
+              this.is500 = true;
+              break;
+            default:
+              this.isGenericError = true;
+          }
+        }
+      }
+    },
+
     changeUsername() {
-      let token = this.$route.params.jwt;
+      const token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": this.newValues.username}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
-
+      this.errorWrapper(
+          function () {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": this.newValues.username}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          }
+      )
     },
 
     changePassword() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": this.newValues.password}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
+      this.errorWrapper(
+          function () {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": this.newValues.password}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
     },
 
     changeEmail() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": this.newValues.email}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
+      this.errorWrapper(
+          function () {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": this.newValues.email}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
 
     },
 
     changeName() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {
-        "first_name": this.newValues.firstname,
-        "last_name": this.newValues.lastname
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
+      this.errorWrapper(
+          () => {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {
+              "first_name": this.newValues.firstname,
+              "last_name": this.newValues.lastname
+            }, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
     },
 
     async deleteAccount() {
       let token = this.$route.params.jwt;
 
-      const res = await axios.get('https://iam.netsoc.ie/v1/users/self', {
+      const res = axios.get('https://iam.netsoc.ie/v1/users/self', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -284,6 +356,14 @@ export default {
       this.isChangeName = false;
       this.isChangeUsername = false;
       this.isChangePassword = false;
+      this.is200 = false;
+      this.is400 = false;
+      this.is401 = false;
+      this.is403 = false;
+      this.is404 = false;
+      this.is409 = false;
+      this.is500 = false;
+      this.isGenericError = false;
     },
 
     logout() {
