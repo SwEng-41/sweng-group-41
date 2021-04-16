@@ -3,7 +3,7 @@
     <h2>Account System</h2>
 
     <div class="section">
-      <Form @submit="isChangeUsername = true;" :validation-schema="usernameSchema">
+      <Form @submit="setNewValues($event, 'isChangeUsername')" :validation-schema="usernameSchema">
         <div class="inputbox">
           <Field name="username" required/>
           <label>New Username</label>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="isChangePassword = true;" :validation-schema="passwordSchema">
+      <Form @submit="setNewValues($event, 'isChangePassword')" :validation-schema="passwordSchema">
         <div class="inputbox">
           <Field name="password" type="password" required/>
           <label>New Password</label>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="isChangeEmail = true;" :validation-schema="emailSchema">
+      <Form @submit="setNewValues($event, 'isChangeEmail')" :validation-schema="emailSchema">
         <div class="inputbox">
           <Field name="email" required/>
           <label>New Email</label>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="section">
-      <Form @submit="isChangeName = true;" :validation-schema="nameSchema">
+      <Form @submit="setNewValues($event, 'isChangeName')" :validation-schema="nameSchema">
         <div class="inputbox">
           <Field name="firstname" required/>
           <label>First Name</label>
@@ -157,6 +157,7 @@ export default {
       isChangeName: false,
       isChangeUsername: false,
       isChangePassword: false,
+      newValues: Object,
     };
   },
 
@@ -164,10 +165,15 @@ export default {
 
   methods: {
 
-    changeUsername({username}) {
+    setNewValues(values, modalVariable) {
+      this.newValues = values;
+      this[modalVariable] = true;
+    },
+
+    changeUsername() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": username}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": this.newValues.username}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -176,10 +182,10 @@ export default {
 
     },
 
-    changePassword({password}) {
+    changePassword() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": password}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": this.newValues.password}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -187,10 +193,10 @@ export default {
       });
     },
 
-    changeEmail({email}) {
+    changeEmail() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": email}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": this.newValues.email}, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",
@@ -199,10 +205,13 @@ export default {
 
     },
 
-    changeName({firstname, lastname}) {
+    changeName() {
       let token = this.$route.params.jwt;
 
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": firstname, "last_name": lastname}, {
+      axios.patch('https://iam.netsoc.ie/v1/users/self', {
+        "first_name": this.newValues.firstname,
+        "last_name": this.newValues.lastname
+      }, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "text/html",

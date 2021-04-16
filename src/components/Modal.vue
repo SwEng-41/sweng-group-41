@@ -12,7 +12,7 @@ export default {
   props: {
     title: String,
     body: String,
-    confirmation: Boolean,
+    confirmation: String,
     confirmText: {
       type: String,
       default: "Confirm"
