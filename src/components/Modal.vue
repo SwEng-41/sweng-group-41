@@ -5,12 +5,25 @@ export default {
     close() {
       this.$emit('close');
     },
-    buttonPressed() {
-      this.$emit('buttonPressed');
+    confirm() {
+      this.$emit('confirm');
     }
   },
-  props: ['title', 'body'],
-};
+  props: {
+    title: String,
+    body: String,
+    confirmation: Boolean,
+    confirmText: {
+      type: String,
+      default: "Confirm"
+    },
+    closeText: {
+      type: String,
+      default: "Close"
+    }
+  }
+}
+;
 </script>
 
 <template>
@@ -32,13 +45,22 @@ export default {
 
           <footer class="modal-footer">
             <slot name="footer">
-              <button @click="close(); buttonPressed();">
+              <button v-if=confirmation @click="confirm();">
                 <div class="button">
                   <span></span>
                   <span></span>
                   <span></span>
                   <span></span>
-                  Close
+                  {{ confirmText }}
+                </div>
+              </button>
+              <button @click="close();">
+                <div class="button">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  {{ closeText }}
                 </div>
               </button>
             </slot>

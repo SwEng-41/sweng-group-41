@@ -86,16 +86,21 @@
       </a>
     </div>
 
-    <Modal v-show="isDelete" @close="closeModal();" @buttonPressed="deleteAccount();" title="Are you sure you want to delete your Account?"
-        body="Press close to delete, x to cancel"/>
-    <Modal v-show="isChangeName" @close="closeModal();" @buttonPressed="changeName();" title="Are you sure you want to change your name?"
-        body="Press close to change name, x to cancel"/>
-    <Modal v-show="isChangeEmail" @close="closeModal();" @buttonPressed="changeEmail();" title="Are you sure you want to change your email?"
-        body="Press close to change email, x to cancel"/>
-    <Modal v-show="isChangePassword" @close="closeModal();" @buttonPressed="changePassword();" title="Are you sure you want to change your password?"
-        body="Press close to change password, x to cancel"/>
-    <Modal v-show="isChangeUsername" @close="closeModal();" @buttonPressed="changeUsername();" title="Are you sure you want to change your username?"
-        body="Press close to change username, x to cancel"/>
+    <Modal v-show="isDelete" @close="closeModal()" @confirm="deleteAccount()" confirmation=true
+           confirm-text="Delete" close-text="Cancel" title="Delete Account"
+           body="Are you sure you want to delete your account?"/>
+    <Modal v-show="isChangeName" @close="closeModal();" @confirm="changeName();" confirmation=true
+           title="Change Name" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your name?"/>
+    <Modal v-show="isChangeEmail" @close="closeModal();" @confirm="changeEmail();" confirmation=true
+           title="Change Email" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your email?"/>
+    <Modal v-show="isChangePassword" @close="closeModal();" @confirm="changePassword();" confirmation=true
+           title="Change Password" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your password?"/>
+    <Modal v-show="isChangeUsername" @close="closeModal();" @confirm="changeUsername();" confirmation=true
+           confirm-text="Change" close-text="Cancel" title="Change Username"
+           body="Are you sure you want to change your username?"/>
 
   </div>
 </template>
@@ -256,7 +261,7 @@ export default {
         else console.log("server issue");
       }
 
-      document.location.href="/";
+      document.location.href = "/";
 
     },
 
@@ -266,6 +271,10 @@ export default {
 
     closeModal() {
       this.isDelete = false;
+      this.isChangeEmail = false;
+      this.isChangeName = false;
+      this.isChangeUsername = false;
+      this.isChangePassword = false;
     },
 
     logout() {
