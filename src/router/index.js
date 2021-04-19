@@ -4,6 +4,7 @@ import Login from '@/views/Login'
 import Forgot from '@/views/Forgot'
 import Registration from '@/views/Registration'
 import Reset from '@/views/Reset'
+import Verify from '@/views/Verify'
 
 // Account Renewal
 import Renew from '@/views/Renew'
@@ -50,6 +51,11 @@ const routes = [
     path: "/reset",
     name: "Reset",
     component: Reset
+  },
+  {
+    path: "/verify",
+    name: "Verify",
+    component: Verify
   }
 ]
 
