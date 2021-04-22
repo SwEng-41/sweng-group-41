@@ -194,14 +194,16 @@ export default {
     setNewValues(values, modalVariable) {
       this.newValues = values;
       this[modalVariable] = true;
+      console.log("I called set new values!")
     },
 
     async errorWrapper(axiosFunction) {
       try {
         this.closeModal();
-        await axiosFunction()
+        await axiosFunction(this.newValues)
         this.is200 = true;
       } catch (e) {
+        console.log(e)
         if (!e.errorResponse) this.isGenericError = true;
         else {
           switch (e.errorResponse.status) {
@@ -231,11 +233,12 @@ export default {
     },
 
     changeUsername() {
-      const token = this.$route.params.jwt;
+      const token = localStorage.getItem('jwt');
+      console.log("TOKEN GRABBED", token)
 
       this.errorWrapper(
-          function () {
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": this.newValues.username}, {
+          function ({username}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": username}, {
               headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "text/html",
@@ -246,11 +249,11 @@ export default {
     },
 
     changePassword() {
-      let token = this.$route.params.jwt;
+      const token = localStorage.getItem('jwt');
 
       this.errorWrapper(
-          function () {
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": this.newValues.password}, {
+          function ({password}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": password}, {
               headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "text/html",
@@ -260,11 +263,11 @@ export default {
     },
 
     changeEmail() {
-      let token = this.$route.params.jwt;
+      const token = localStorage.getItem('jwt');
 
       this.errorWrapper(
-          function () {
-            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": this.newValues.email}, {
+          function ({email}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": email}, {
               headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "text/html",
@@ -275,13 +278,13 @@ export default {
     },
 
     changeName() {
-      let token = this.$route.params.jwt;
+      const token = localStorage.getItem('jwt');
 
       this.errorWrapper(
-          () => {
+          ({firstname, lastname}) => {
             axios.patch('https://iam.netsoc.ie/v1/users/self', {
-              "first_name": this.newValues.firstname,
-              "last_name": this.newValues.lastname
+              "first_name": firstname,
+              "last_name": lastname
             }, {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -292,7 +295,7 @@ export default {
     },
 
     async deleteAccount() {
-      let token = this.$route.params.jwt;
+      const token = localStorage.getItem('jwt');
 
       const res = axios.get('https://iam.netsoc.ie/v1/users/self', {
         headers: {
@@ -367,6 +370,7 @@ export default {
     },
 
     logout() {
+      localStorage.removeItem('jwt');
       this.$router.removeRoute("Account");
     },
   }

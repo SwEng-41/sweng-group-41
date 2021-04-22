@@ -21,16 +21,25 @@ const routes = [
     path: "/",
     name: "Login",
     component: Login,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/forgot",
     name: "Forgot",
     component: Forgot,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/registration",
     name: "Registration",
-    component: Registration
+    component: Registration,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/renew",
@@ -62,6 +71,17 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.allowAnonymous && !localStorage.getItem('jwt')) {
+    next({
+      name: 'Login',
+      query: {redirect: to.fullPath}
+    })
+  } else {
+    next()
+  }
 })
 
 export default router

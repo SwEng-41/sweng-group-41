@@ -94,7 +94,8 @@ export default {
     async login({username, password}) {
       try {
         const response = await axios.post('https://iam.netsoc.ie/v1/users/' + username + '/login', {"password": password})
-        await this.$router.push({name: 'Account', params: {jwt: response.data.token}});
+        localStorage.setItem('jwt', response.data.token)
+        await this.$router.push({name: 'Account'});
 
       } catch (err) {
         if (err.response.status === 404) this.nonExistentUser = true;
