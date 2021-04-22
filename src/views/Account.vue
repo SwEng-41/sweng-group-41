@@ -64,21 +64,18 @@
     </div>
 
     <div class="lastsection">
-      <a href="" v-on:click="isDelete = true;">
+      <a href="" v-on:click="$event.preventDefault(); isDelete = true;">
         <div class="buttonnoanim">
           delete account
         </div>
       </a>
 
       <a href="">
-        <div @click="renewAccount()" class="buttonnoanim">
+        <div v-if="neverRenewed()" @click="renewAccount()" class="buttonnoanim">
           renew account
         </div>
       </a>
 
-    </div>
-
-    <div class="section">
       <a href="">
         <div @click="logout()" class="buttonnoanim">
           Logout
@@ -194,7 +191,6 @@ export default {
     setNewValues(values, modalVariable) {
       this.newValues = values;
       this[modalVariable] = true;
-      console.log("I called set new values!")
     },
 
     async errorWrapper(axiosFunction) {
@@ -203,7 +199,6 @@ export default {
         await axiosFunction(this.newValues)
         this.is200 = true;
       } catch (e) {
-        console.log(e)
         if (!e.errorResponse) this.isGenericError = true;
         else {
           switch (e.errorResponse.status) {
@@ -234,7 +229,6 @@ export default {
 
     changeUsername() {
       const token = localStorage.getItem('jwt');
-      console.log("TOKEN GRABBED", token)
 
       this.errorWrapper(
           function ({username}) {
@@ -372,6 +366,17 @@ export default {
     logout() {
       localStorage.removeItem('jwt');
       this.$router.removeRoute("Account");
+    },
+
+    expiryDateString() {
+      const token = localStorage.getItem('jwt');
+      const tokenDate = new Date(JSON.parse(atob(token.split(".")[1]))["exp"] * 1000);
+      return tokenDate.getTime() <= new Date("2000-01-01T00:00:00Z").getTime()
+          ? "Never Renewed"
+          : tokenDate.toDateString();
+    },
+    neverRenewed() {
+      return this.expiryDateString() === "Never Renewed";
     },
   }
 }
