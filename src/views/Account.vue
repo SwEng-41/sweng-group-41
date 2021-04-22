@@ -64,7 +64,7 @@
     </div>
 
     <div class="lastsection">
-      <a v-on:click="isDelete = true;">
+      <a href="" v-on:click="isDelete = true;">
         <div class="buttonnoanim">
           delete account
         </div>
