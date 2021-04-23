@@ -34,6 +34,9 @@ export default {
   },
 
   methods: {
+    // createSession()
+    // Creates a Stripe Checkout Session using the user's JWT for authentication.
+    // Redirects the user to the prebuilt checkout page in Stripe.
     createSession() {
       if ( this.uid.length < 1) {
         this.router.push({ name: "Login" });
@@ -41,7 +44,7 @@ export default {
 
       else {
         let stripe = require('stripe')('pk_test_51IiIOMDLjBSYtQGtEwVijXa6nsMtKWarqGIvCOx5LMWkE0RvpC6EUM1QBDo6WXa99OcvFoPp2tvwZ7wRrleQc6Vv00G3B30mRk');
-        let URL = "http://localhost:4242/create-session";
+        let URL = "http://localhost:8081/create-session";
         let uid = this.uid;
         
         axios.post(URL, {uid: uid}, 

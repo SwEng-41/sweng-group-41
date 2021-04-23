@@ -71,11 +71,7 @@
       </a>
 
       <a href="">
-<<<<<<< Updated upstream
         <div v-if="neverRenewed()" @click="$event.preventDefault(); renewAccount()" class="buttonnoanim">
-=======
-        <div v-if="!neverRenewed()" @click="renewAccount()" class="buttonnoanim">
->>>>>>> Stashed changes
           renew account
         </div>
       </a>
