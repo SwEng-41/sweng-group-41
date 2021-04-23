@@ -71,7 +71,11 @@
       </a>
 
       <a href="">
+<<<<<<< Updated upstream
         <div v-if="neverRenewed()" @click="$event.preventDefault(); renewAccount()" class="buttonnoanim">
+=======
+        <div v-if="!neverRenewed()" @click="renewAccount()" class="buttonnoanim">
+>>>>>>> Stashed changes
           renew account
         </div>
       </a>
@@ -128,12 +132,14 @@ import {ErrorMessage, Field, Form} from 'vee-validate';
 import * as yup from 'yup';
 
 export default {
+  name: 'Account',
   components: {
     Field,
     Modal,
     Form,
     ErrorMessage,
   },
+
   setup() {
     yup.setLocale({
       string: {
@@ -184,9 +190,33 @@ export default {
     };
   },
 
-  name: 'Account',
+  beforeMount() {
+    if(localStorage.getItem('jwt').length < 1) {
+      this.$router.push({ name: "Login "});
+    }
+    else { 
+      this.getUserID();
+    }
+  },
+
 
   methods: {
+    getUserID() {
+      let token = localStorage.getItem('jwt');
+      var URL = "https://iam.netsoc.ie/v1/users/self";
+      axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((resp) => {
+        localStorage.setItem('userID', resp.data.username);
+      })
+      .catch((e) => {
+        console.log(e);
+        setTimeout(this.logout, 1500);
+      })
+    },
 
     setNewValues(values, modalVariable) {
       this.newValues = values;

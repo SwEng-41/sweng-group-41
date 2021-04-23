@@ -59,6 +59,7 @@ import {ErrorMessage, Field, Form} from "vee-validate";
 import * as yup from "yup";
 
 export default {
+  name: "Login",
   components: {
     Modal,
     Field,
@@ -76,7 +77,6 @@ export default {
     };
   },
 
-  name: "Login",
 
   data() {
     return {
@@ -90,14 +90,14 @@ export default {
   },
 
   methods: {
-
     async login({username, password}) {
       try {
         const response = await axios.post('https://iam.netsoc.ie/v1/users/' + username + '/login', {"password": password})
-        localStorage.setItem('jwt', response.data.token)
+        localStorage.setItem('jwt', response.data.token);
+        localStorage.setItem('user', username);
         await this.$router.push({name: 'Account'});
-
-      } catch (err) {
+      } 
+      catch (err) {
         if (err.response.status === 404) this.nonExistentUser = true;
         else if (err.response.status === 401) this.isInvalid = true;
         else this.isServerIssue = true;
@@ -113,11 +113,10 @@ export default {
     },
 
     closeModal() {
-      this.isLoginSuccessful = false;
+      this.isLoginSuccessful = false
       this.isServerIssue = false;
       this.isInvalid = false;
       this.nonExistentUser = false;
-
     },
 
   },
