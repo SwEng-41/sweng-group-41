@@ -64,7 +64,10 @@ const routes = [
   {
     path: "/verify",
     name: "Verify",
-    component: Verify
+    component: Verify,
+    meta: {
+      allowAnonymous: true
+    }
   }
 ]
 
