@@ -1,1 +1,4 @@
-
+In /scr folder is source code
+All the components is in /components folder
+Each page design is in /views foler
+/asset folder is for global styling
