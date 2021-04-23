@@ -71,7 +71,7 @@
       </a>
 
       <a href="">
-        <div v-if="neverRenewed()" @click="renewAccount()" class="buttonnoanim">
+        <div v-if="neverRenewed()" @click="$event.preventDefault(); renewAccount()" class="buttonnoanim">
           renew account
         </div>
       </a>
