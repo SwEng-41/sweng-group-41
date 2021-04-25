@@ -1,412 +1,409 @@
 <template>
-  <html>
-  <body>
-
-  <div class="login-box">
-    <h2>Account System </h2>
+  <div class="box">
+    <h2>Account System</h2>
 
     <div class="section">
-
-      <div class="user-box">
-        <input type="text" id="new_username" name="" required="">
-        <label>New Username</label>
-      </div>
-
-      <a v-on:click="changeUsername()" href="#" onclick="return false;">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          change username
+      <Form @submit="setNewValues($event, 'isChangeUsername')" :validation-schema="usernameSchema">
+        <div class="inputbox">
+          <Field name="username" required/>
+          <label>New Username</label>
+          <ErrorMessage class="vee-error" name="username"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Username</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="user-box">
-        <input type="text" id="new_password" name="" required="">
-        <label>New Password</label>
-      </div>
-
-      <a v-on:click="changePassword()" href="#" onclick="return false;">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          change password
+      <Form @submit="setNewValues($event, 'isChangePassword')" :validation-schema="passwordSchema">
+        <div class="inputbox">
+          <Field name="password" type="password" required/>
+          <label>New Password</label>
+          <ErrorMessage class="vee-error" name="password"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Password</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="user-box">
-        <input type="text" id="new_email" name="" required="">
-        <label>New Email</label>
-      </div>
-
-      <a v-on:click="changeEmail()" href="#" onclick="return false;">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          change email
+      <Form @submit="setNewValues($event, 'isChangeEmail')" :validation-schema="emailSchema">
+        <div class="inputbox">
+          <Field name="email" required/>
+          <label>New Email</label>
+          <ErrorMessage class="vee-error" name="email"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Email</div>
+        </button>
+      </Form>
     </div>
 
     <div class="section">
-
-      <div class="user-box">
-        <input type="text" id="new_first_name" name="" required="">
-        <label>First Name</label>
-      </div>
-
-      <div class="user-box">
-        <input type="text" id="new_last_name" name="" required="">
-        <label>Last Name</label>
-      </div>
-
-      <a v-on:click="changeName()" href="#" onclick="return false;">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          change name
+      <Form @submit="setNewValues($event, 'isChangeName')" :validation-schema="nameSchema">
+        <div class="inputbox">
+          <Field name="firstname" required/>
+          <label>First Name</label>
+          <ErrorMessage class="vee-error" name="firstname"/>
+        </div>
+        <div class="inputbox">
+          <Field name="lastname" required/>
+          <label>Last Name</label>
+          <ErrorMessage class="vee-error" name="lastname"/>
         </div>
 
-      </a>
-
+        <button>
+          <div class="buttonnoanim">Change Name</div>
+        </button>
+      </Form>
     </div>
 
-    <div class="section">
-
-      <a href="">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+    <div class="lastsection">
+      <a href="" v-on:click="$event.preventDefault(); isDelete = true;">
+        <div class="buttonnoanim">
           delete account
         </div>
-
       </a>
-
-    </div>
-
-    <div class="section">
 
       <a href="">
-
-        <div class="button">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+        <div v-if="neverRenewed()" @click="$event.preventDefault(); renewAccount()" class="buttonnoanim">
           renew account
         </div>
-
       </a>
 
+      <a href="">
+        <div @click="logout()" class="buttonnoanim">
+          Logout
+        </div>
+      </a>
     </div>
 
-  </div>
+    <!-- Confirmation modals -->
+    <Modal v-show="isDelete" @close="closeModal()" @confirm="deleteAccount()" confirmation=true
+           confirm-text="Delete" close-text="Cancel" title="Delete Account"
+           body="Are you sure you want to delete your account?"/>
+    <Modal v-show="isChangeName" @close="closeModal();" @confirm="changeName();" confirmation=true
+           title="Change Name" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your name?"/>
+    <Modal v-show="isChangeEmail" @close="closeModal();" @confirm="changeEmail();" confirmation=true
+           title="Change Email" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your email?"/>
+    <Modal v-show="isChangePassword" @close="closeModal();" @confirm="changePassword();" confirmation=true
+           title="Change Password" close-text="Cancel" confirm-text="Change"
+           body="Are you sure you want to change your password?"/>
+    <Modal v-show="isChangeUsername" @close="closeModal();" @confirm="changeUsername();" confirmation=true
+           confirm-text="Change" close-text="Cancel" title="Change Username"
+           body="Are you sure you want to change your username?"/>
 
-  </body>
-  </html>
+    <!-- Success and Error Modals -->
+    <Modal v-show="is200" @close="closeModal();" title="Success"
+           body="The requested changes have been applied."/>
+    <Modal v-show="is400" @close="closeModal();" title="Error"
+           body="Required fields missing. Please try again!"/>
+    <Modal v-show="is401" @close="closeModal();" title="Error"
+           body="Authorisation error. Make sure you are logged in!"/>
+    <Modal v-show="is403" @close="closeModal();" title="Error"
+           body="Permission error. Make sure you are logged in!"/>
+    <Modal v-show="is404" @close="closeModal();" title="Error"
+           body="Username does not exist. Please try again!"/>
+    <Modal v-show="is409" @close="closeModal();" title="Error"
+           body="Username or email already exists. Please try again!"/>
+    <Modal v-show="is500" @close="closeModal();" title="Error"
+           body="Server error. Please try again later!"/>
+    <Modal v-show="isGenericError" @close="closeModal();" title="Error"
+           body="There was an error. Please try again!"/>
+  </div>
 </template>
 
 
 <script>
 import axios from 'axios';
+import Modal from '@/components/Modal'
+import {ErrorMessage, Field, Form} from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   name: 'Account',
+  components: {
+    Field,
+    Modal,
+    Form,
+    ErrorMessage,
+  },
 
-  props: ["jwt"],
+  setup() {
+    yup.setLocale({
+      string: {
+        matches: 'Must be a valid @tcd.ie address',
+      },
+    });
+
+    const usernameSchema = yup.object({
+      username: yup.string().required().label("Username"),
+    });
+
+    const passwordSchema = yup.object({
+      password: yup.string().required().min(8).label("Password"),
+    });
+
+    const emailSchema = yup.object({
+      email: yup.string().required().email().matches(".+@tcd.ie$").label("Email"),
+    });
+    const nameSchema = yup.object({
+      firstname: yup.string().required().label("First Name"),
+      lastname: yup.string().required().label("Last Name"),
+    });
+
+    return {
+      usernameSchema: usernameSchema,
+      passwordSchema: passwordSchema,
+      emailSchema: emailSchema,
+      nameSchema: nameSchema,
+    }
+  },
+
+  data() {
+    return {
+      isDelete: false,
+      isChangeEmail: false,
+      isChangeName: false,
+      isChangeUsername: false,
+      isChangePassword: false,
+      newValues: Object,
+      is200: false,
+      is400: false,
+      is401: false,
+      is403: false,
+      is404: false,
+      is409: false,
+      is500: false,
+      isGenericError: false,
+    };
+  },
+
+  beforeMount() {
+    if(localStorage.getItem('jwt').length < 1) {
+      this.$router.push({ name: "Login "});
+    }
+    else { 
+      this.getUserID();
+    }
+  },
+
 
   methods: {
+    getUserID() {
+      let token = localStorage.getItem('jwt');
+      var URL = "https://iam.netsoc.ie/v1/users/self";
+      axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((resp) => {
+        localStorage.setItem('userID', resp.data.username);
+      })
+      .catch((e) => {
+        console.log(e);
+        setTimeout(this.logout, 1500);
+      })
+    },
+
+    setNewValues(values, modalVariable) {
+      this.newValues = values;
+      this[modalVariable] = true;
+    },
+
+    async errorWrapper(axiosFunction) {
+      try {
+        this.closeModal();
+        await axiosFunction(this.newValues)
+        this.is200 = true;
+      } catch (e) {
+        if (!e.errorResponse) this.isGenericError = true;
+        else {
+          switch (e.errorResponse.status) {
+            case 400:
+              this.is400 = true;
+              break;
+            case 401:
+              this.is401 = true;
+              break;
+            case 403:
+              this.is403 = true;
+              break;
+            case 404:
+              this.is404 = true;
+              break;
+            case 409:
+              this.is409 = true;
+              break;
+            case 500:
+              this.is500 = true;
+              break;
+            default:
+              this.isGenericError = true;
+          }
+        }
+      }
+    },
 
     changeUsername() {
+      const token = localStorage.getItem('jwt');
 
-      let token = this.jwt;
-
-      let new_username = document.getElementById("new_username").value;
-
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": new_username}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
-
+      this.errorWrapper(
+          function ({username}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"username": username}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          }
+      )
     },
 
     changePassword() {
+      const token = localStorage.getItem('jwt');
 
-      let token = this.jwt;
-
-      let new_password = document.getElementById("new_password").value;
-
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": new_password}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
-
+      this.errorWrapper(
+          function ({password}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"password": password}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
     },
 
     changeEmail() {
+      const token = localStorage.getItem('jwt');
 
-      let token = this.jwt;
-
-      let new_email = document.getElementById("new_email").value;
-
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": new_email}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
+      this.errorWrapper(
+          function ({email}) {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {"email": email}, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
 
     },
 
     changeName() {
+      const token = localStorage.getItem('jwt');
 
-      let token = this.jwt;
-
-      let new_first_name = document.getElementById("new_first_name").value;
-      let new_last_name = document.getElementById("new_last_name").value;
-
-      axios.patch('https://iam.netsoc.ie/v1/users/self', {"first_name": new_first_name, "last_name": new_last_name}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "text/html",
-        },
-      });
-
+      this.errorWrapper(
+          ({firstname, lastname}) => {
+            axios.patch('https://iam.netsoc.ie/v1/users/self', {
+              "first_name": firstname,
+              "last_name": lastname
+            }, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "text/html",
+              },
+            });
+          });
     },
 
-    deleteAccount() {
+    async deleteAccount() {
+      const token = localStorage.getItem('jwt');
 
-      let token = this.jwt;
-
-      let username = "JohnSmith69";
-
-      axios.post('https://iam.netsoc.ie/_synapse/admin/v1/deactivate/' + username, {"erase": true}, {
+      const res = axios.get('https://iam.netsoc.ie/v1/users/self', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      let userId = '@' + res.data.username + ':netsoc.ie';
+
+      try {
+        await axios.post('https://matrix.netsoc.ie/_synapse/admin/v1/deactivate/' + userId, {"erase": true}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log("Matrix Account deleted!");
+      } catch (error) {
+        if (error.response.status === 404) console.log("Matrix Account never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      }
+
+      try {
+        await axios.delete('https://webspaced.netsoc.ie/v1/webspace/self', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Webspace deleted!");
+      } catch (error) {
+        if (error.response.status === 404) console.log("Webspace never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      }
+
+      try {
+        await axios.delete('https://iam.netsoc.ie/v1/users/self', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Account deleted!");
+      } catch (error) {
+        if (error.response.status === 404) console.log("Account never existed!");
+        else if (error.response.status === 401) console.log("Authentication error");
+        else console.log("server issue");
+      }
+
+      document.location.href = "/";
 
     },
 
     renewAccount() {
+      this.$router.push({name: "Renew"});
+    },
 
-    }
+    closeModal() {
+      this.isDelete = false;
+      this.isChangeEmail = false;
+      this.isChangeName = false;
+      this.isChangeUsername = false;
+      this.isChangePassword = false;
+      this.is200 = false;
+      this.is400 = false;
+      this.is401 = false;
+      this.is403 = false;
+      this.is404 = false;
+      this.is409 = false;
+      this.is500 = false;
+      this.isGenericError = false;
+    },
+
+    logout() {
+      localStorage.removeItem('jwt');
+      this.$router.removeRoute("Account");
+    },
+
+    expiryDateString() {
+      const token = localStorage.getItem('jwt');
+      const tokenDate = new Date(JSON.parse(atob(token.split(".")[1]))["exp"] * 1000);
+      return tokenDate.getTime() <= new Date("2000-01-01T00:00:00Z").getTime()
+          ? "Never Renewed"
+          : tokenDate.toDateString();
+    },
+    neverRenewed() {
+      return this.expiryDateString() === "Never Renewed";
+    },
   }
 }
 </script>
-
-
-<style>
-
-a {
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
-}
-
-.section {
-  display: inline-flex;
-  justify-content: center;
-  padding: 12px 0px 12px 0px;
-  border: solid 2px #243b55;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-}
-
-.login-box {
-  position: absolute;
-  width: 600px;
-  top: 50%;
-  left: 50%;
-  padding: 40px;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, .5);
-  box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
-  border-radius: 10px;
-}
-
-.login-box h2 {
-  margin: 0 0 30px;
-  padding: 0;
-  color: #fff;
-  text-align: center;
-}
-
-.login-box .user-box {
-  position: relative;
-}
-
-.login-box .user-box input {
-  width: 75%;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  margin-bottom: 0px;
-  border: none;
-  border-bottom: 1px solid #fff;
-  outline: none;
-  background: transparent;
-}
-
-.login-box .user-box label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  pointer-events: none;
-  transition: .5s;
-}
-
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-  top: -20px;
-  left: 0;
-  color: #03e9f4;
-  font-size: 12px;
-}
-
-.button {
-  position: relative;
-  padding: 10px;
-  color: #05c9d3;
-  font-size: 18px;
-  font-variant: small-caps;
-  text-decoration: none;
-  overflow: hidden;
-  transition: 0.5s;
-  margin: 0px;
-}
-
-.button:hover {
-  background: #03e9f4;
-  color: #fff;
-  box-shadow: 0 0 5px #03e9f4,
-  0 0 25px #03e9f4,
-  0 0 50px #03e9f4,
-  0 0 100px #03e9f4;
-}
-
-.button span {
-  position: absolute;
-  display: block;
-}
-
-.button span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #05c9d3);
-  animation: btn-anim1 1s linear infinite;
-}
-
-@keyframes btn-anim1 {
-  0% {
-    left: -100%;
-  }
-  50%, 100% {
-    left: 100%;
-  }
-}
-
-.button span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, #05c9d3);
-  animation: btn-anim2 1s linear infinite;
-  animation-delay: .25s
-}
-
-@keyframes btn-anim2 {
-  0% {
-    top: -100%;
-  }
-  50%, 100% {
-    top: 100%;
-  }
-}
-
-.button span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(270deg, transparent, #05c9d3);
-  animation: btn-anim3 1s linear infinite;
-  animation-delay: .5s
-}
-
-@keyframes btn-anim3 {
-  0% {
-    right: -100%;
-  }
-  50%, 100% {
-    right: 100%;
-  }
-}
-
-.button span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, #05c9d3);
-  animation: btn-anim4 1s linear infinite;
-  animation-delay: .75s
-}
-
-@keyframes btn-anim4 {
-  0% {
-    bottom: -100%;
-  }
-  50%, 100% {
-    bottom: 100%;
-  }
-}
-</style>

@@ -5,7 +5,7 @@
         <h1>Netsoc Membership</h1>
       </div>
     </div>
-    <div v-if="!showingButton">You will be redirected automatically...</div>
+    <div v-if="showingButton">You will be redirected automatically...</div>
     <button
       v-else
       v-on:click="createSession"
@@ -19,56 +19,60 @@
 </template>
 
 <script>
+const axios = require('axios');
+
 export default {
   name: "Renew",
-  props: ["uid", "jwt"],
+  
   data() {
     return {
+      token: localStorage.getItem('jwt'),
+      uid: localStorage.getItem('userID'),
       errorResponse: "",
       showingButton: false,
     };
   },
+
   methods: {
+    // createSession()
+    // Creates a Stripe Checkout Session using the user's JWT for authentication.
+    // Redirects the user to the prebuilt checkout page in Stripe.
     createSession() {
-      if (this.uid.length < 1) this.$router.push({ name: "Login" });
+      if ( this.uid.length < 1) {
+        this.router.push({ name: "Login" });
+      }
 
-      // eslint-disable-next-line
-      let stripe = Stripe(STRIPE_PUBLIC_KEY);
-
-      // eslint-disable-next-line
-      const URL = PAYMENT_CREATE_SESSION_URL;
-
-      let uid = this.uid;
-      const axios = require("axios").default;
-      axios
-        .post(
-          URL,
-          { uid: uid },
-          {
-            headers: {
+      else {
+        let stripe = require('stripe')('pk_test_51IiIOMDLjBSYtQGtEwVijXa6nsMtKWarqGIvCOx5LMWkE0RvpC6EUM1QBDo6WXa99OcvFoPp2tvwZ7wRrleQc6Vv00G3B30mRk');
+        let URL = "http://localhost:8081/create-session";
+        let uid = this.uid;
+        
+        axios.post(URL, {uid: uid}, 
+        {
+          headers: {
               "Access-Control-Allow-Headers": "Content-Type",
               "Content-Type": "application/json",
-            },
           }
-        )
+        })
         .then((session) => {
           stripe.redirectToCheckout({ sessionId: session.data.id });
         })
-        .catch((error) => {
-          this.errorResponse = `Error: ${error.response.data.message}`;
-        });
+        .catch((e) => {
+          console.log(e);
+        })
+      }
     },
   },
+
   beforeMount() {
-    if (this.jwt.length < 1) {
+    if (this.token.length < 1) {
       this.$router.push({ name: "Login" });
-    } else if (this.uid.length < 1) {
-      this.$router.push({ name: "Account" });
-    } else {
+    }
+    else {
       this.createSession();
     }
     setTimeout(() => (this.showingButton = true), 5000);
-  },
+  }
 };
 </script>
 

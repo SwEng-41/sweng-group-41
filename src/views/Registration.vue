@@ -1,52 +1,85 @@
 <template class="container main">
 
-  <div class="container registrationForm">
-    <header class="head">
-      <h1>Register</h1>
-      <p>Please fill in the below form to create an account</p>
-      <hr>
-    </header>
+  <div class="box registrationForm">
+    <h2>Netsoc Registration</h2>
 
-    <Form @submit="regSubmit" :validation-schema="formSchema">
-      <Field name="username" placeholder="Username"/>
-      <ErrorMessage name="username"/>
+    <div class="section">
+      <Form @submit="register" :validation-schema="formSchema">
+        <div class="inputbox">
+          <Field name="username" required/>
+          <label>Username</label>
+          <ErrorMessage class="vee-error" name="username"/>
+        </div>
 
-      <Field name="firstname" placeholder="First Name"/>
-      <ErrorMessage name="firstname"/>
+        <div class="inputbox">
+          <Field name="firstname" required/>
+          <label>First Name</label>
+          <ErrorMessage class="vee-error" name="firstname"/>
+        </div>
 
-      <Field name="lastname" placeholder="Last Name"/>
-      <ErrorMessage name="lastname"/>
+        <div class="inputbox">
+          <Field name="lastname" required/>
+          <label>Last Name</label>
+          <ErrorMessage class="vee-error" name="lastname"/>
+        </div>
 
-      <Field name="email" placeholder="TCD Email" type="email"/>
-      <ErrorMessage name="email"/>
+        <div class="inputbox">
+          <Field name="email" required/>
+          <label>TCD Email</label>
+          <ErrorMessage class="vee-error" name="email"/>
+        </div>
 
-      <Field name="confirmEmail" placeholder="Confirm Email"/>
-      <ErrorMessage name="confirmEmail"/>
+        <div class="inputbox">
+          <Field name="confirmEmail" required/>
+          <label>Confirm Email</label>
+          <ErrorMessage class="vee-error" name="confirmEmail"/>
+        </div>
 
-      <Field name="password" placeholder="Password" type="password"/>
-      <ErrorMessage name="password"/>
+        <div class="inputbox">
+          <Field name="password" required type="password"/>
+          <label>Password</label>
+          <ErrorMessage class="vee-error" name="password"/>
+        </div>
 
-      <Field name="confirmPassword" placeholder="Confirm Password" type="password" ref="password"/>
-      <ErrorMessage name="confirmPassword"/>
+        <div class="inputbox">
+          <Field name="confirmPassword" required type="password" ref="password"/>
+          <label>Confirm Password</label>
+          <ErrorMessage class="vee-error" name="confirmPassword"/>
+        </div>
 
-      <br>
+        <br>
 
-      <button class="btn-reg">Register</button>
-    </Form>
+        <button>
+          <div class="btn-reg button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            register
+          </div>
+        </button>
 
-    <div class="container SignIn">
-      <p>Already have an account?
-        <router-link :to="{ name: 'Login' }">Sign in</router-link>
-      </p>
+      </Form>
     </div>
 
-    <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
-           body="Unfortunately we are experiencing some issues. Please try again later!"/>
-    <Modal v-show="isAccountCreated" @close="closeModal" title="Account Created" body="Please verify your email!"/>
-    <Modal v-show="isTaken" @close="closeModal" title="Invalid Details" body="The email or username is already taken!"/>
-    <Modal v-show="isInvalid" @close="closeModal" title="Authorisation Error" body="You are not allowed to do that!"/>
-    <Modal v-show="isMissing" @close="closeModal" title="Missing Details" body="Some required fields are missing!"/>
+    <div class="section">
+      <h4>Already have an account?</h4>
+      <a v-on:click="signIn()" href="#" onclick="return false;">
+        <div class="buttonnoanim">
+          sign in
+        </div>
+      </a>
+    </div>
+
   </div>
+
+  <Modal v-show="isServerIssue" @close="closeModal" title="Server Issue"
+         body="Unfortunately we are experiencing some issues. Please try again later!"/>
+  <Modal v-show="isAccountCreated" @close="closeModal(); signIn();" title="Registration Successful!"
+         body="Please verify your email and then log in!"/>
+  <Modal v-show="isTaken" @close="closeModal" title="Invalid Details" body="The email or username is already taken!"/>
+  <Modal v-show="isInvalid" @close="closeModal" title="Authorisation Error" body="You are not allowed to do that!"/>
+  <Modal v-show="isMissing" @close="closeModal" title="Missing Details" body="Some required fields are missing!"/>
 
 </template>
 
@@ -61,9 +94,8 @@ export default {
     Modal,
     Field,
     Form,
-    ErrorMessage,
+    ErrorMessage
   },
-
   setup() {
     yup.setLocale({
       string: {
@@ -96,7 +128,7 @@ export default {
   },
 
   methods: {
-    async regSubmit({username, firstname, lastname, email, password}) {
+    async register({username, email, password, firstname, lastname}) {
       try {
         await axios.post('https://iam.netsoc.ie/v1/users',
             {
@@ -105,7 +137,12 @@ export default {
               "password": password,
               "first_name": firstname,
               "last_name": lastname
-            }
+            },
+            {
+              headers: {
+                Accept: "text/html",
+              }
+            },
         );
 
         this.isAccountCreated = true;
@@ -128,7 +165,9 @@ export default {
       this.isInvalid = false;
       this.isMissing = false;
     },
+    signIn() {
+      this.$router.push({name: 'Login'});
+    }
   }
 };
-
 </script>
